@@ -1,12 +1,23 @@
 package starter.adapter;
 
+import starter.usecase.ThanhToanOutputBoundary;
 import starter.usecase.ThanhToanResponse;
 
-/** Presenter phục vụ xử lý và hiển thị thông tin thanh toán. */
-public final class ThanhToanPresenter {
-    public ThanhToanViewModel present(ThanhToanResponse r) {
+/**
+ * Presenter phục vụ xử lý và hiển thị thông tin thanh toán (Humble Object).
+ * Cài đặt ThanhToanOutputBoundary để nhận kết quả từ ThanhToanUseCase.
+ */
+public final class ThanhToanPresenter implements ThanhToanOutputBoundary {
+    private ThanhToanViewModel viewModel;
+
+    @Override
+    public void present(ThanhToanResponse r) {
         String color = r.success() ? determineColor(r) : "red";
-        return new ThanhToanViewModel(r.orderStatusAfter(), r.paymentStatus(), color);
+        this.viewModel = new ThanhToanViewModel(r.orderStatusAfter(), r.paymentStatus(), color);
+    }
+
+    public ThanhToanViewModel getViewModel() {
+        return viewModel;
     }
 
     private String determineColor(ThanhToanResponse r) {
@@ -19,4 +30,3 @@ public final class ThanhToanPresenter {
 
     public record ThanhToanViewModel(String orderStatus, String paymentStatus, String color) {}
 }
-

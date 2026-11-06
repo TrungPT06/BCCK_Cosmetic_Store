@@ -17,7 +17,8 @@ class DatHangPresenterTest {
     void confirmedOrderShowsGreen() {
         var response = new DatHangResponse(true, "DA_XAC_NHAN", "DA_XAC_NHAN",
                 900_000, 0, 10, true, "KHONG_CO", 0, 0);
-        var vm = presenter.present(response);
+        presenter.present(response);
+        var vm = presenter.getViewModel();
         assertEquals("green", vm.color());
         assertEquals("DA_XAC_NHAN", vm.message());
         assertEquals(900_000, vm.totalAmount());
@@ -28,7 +29,8 @@ class DatHangPresenterTest {
     void pendingPaymentShowsYellow() {
         var response = new DatHangResponse(true, "CHO_THANH_TOAN", "CHO_THANH_TOAN",
                 380_000, 30_000, 14, true, "KHONG_CO", 0, 0);
-        var vm = presenter.present(response);
+        presenter.present(response);
+        var vm = presenter.getViewModel();
         assertEquals("yellow", vm.color());
     }
 
@@ -36,7 +38,8 @@ class DatHangPresenterTest {
     @DisplayName("Đơn hàng lỗi luôn hiển thị màu đỏ (red)")
     void failedOrderShowsRed() {
         var response = DatHangResponse.failure("GIO_HANG_TRONG");
-        var vm = presenter.present(response);
+        presenter.present(response);
+        var vm = presenter.getViewModel();
         assertEquals("red", vm.color());
         assertEquals("GIO_HANG_TRONG", vm.message());
     }
@@ -48,4 +51,3 @@ class DatHangPresenterTest {
         assertEquals("red", presenter.determineStatusColor("UNKNOWN"));
     }
 }
-

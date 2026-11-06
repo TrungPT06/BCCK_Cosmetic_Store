@@ -1,19 +1,13 @@
 package starter.entity;
 
+import starter.entity.strategy.PaymentStrategyFactory;
 import java.time.LocalDate;
 
 /**
  * Chính sách doanh nghiệp (Enterprise Policy) và dịch vụ miền (Domain Service) xác thực đơn hàng mỹ phẩm.
  *
- * Nguyên tắc đơn nhiệm (Single Responsibility): kiểm tra bất biến nghiệp vụ khi tạo đơn hàng
- * và xác định trạng thái vòng đời ban đầu của đơn.
- * Thay đổi khi: quy tắc xác thực đơn hàng hoặc vòng đời trạng thái thay đổi.
- *
- * Các trách nhiệm đã được tách ra:
- * - Phí vận chuyển → {@link ShippingPolicy}
- * - Tính giá → {@link PricingPolicy}
- * - Phân loại sản phẩm → {@link ProductClassification}
- * - Màu hiển thị → {@link starter.adapter.DatHangPresenter}
+ * Đã loại bỏ các chuỗi magic test-data lọt vào production. Việc xác thực thông tin vận chuyển
+ * và voucher được ủy thác cho Value Object ShippingInfo và Entity Voucher với logic thực sự.
  */
 public final class OrderPolicy {
     private static final long SIX_MONTHS = 6;
@@ -24,33 +18,55 @@ public final class OrderPolicy {
         if (!draft.verified()) return "TAI_KHOAN_CHUA_XAC_THUC";
         if (draft.quantity() <= 0 || "KHONG_CO".equals(draft.sku())) return "GIO_HANG_TRONG";
         if (draft.quantity() > draft.availableStock()) return "VUOT_QUA_TON_KHO_KHA_DUNG";
-        if (!"HOP_LE".equals(draft.shippingInfo()))
-            return "THIEU_DIA_CHI".equals(draft.shippingInfo()) ? "THIEU_THONG_TIN_GIAO_HANG" : "SO_DIEN_THOAI_KHONG_HOP_LE";
+
+        // Xác thực qua Value Object ShippingInfo (logic thật về SĐT và địa chỉ)
+        ShippingInfo shipping = draft.shippingInfoObject() != null
+                ? draft.shippingInfoObject()
+                : ShippingInfo.from(draft.shippingInfo());
+        String shippingError = shipping.validate();
+        if (shippingError != null) {
+            return shippingError;
+        }
+
         if (draft.expiryDate() != null) {
             if (!draft.expiryDate().isAfter(draft.today())) return "SAN_PHAM_DA_HET_HAN_SU_DUNG";
             if (draft.expiryDate().isBefore(draft.today().plusMonths(SIX_MONTHS))) return "SAN_PHAM_CAN_HAN_DUOI_6_THANG";
         }
-        return validateVoucher(draft);
-    }
 
-    private String validateVoucher(OrderDraft draft) {
-        String voucher = draft.voucher();
-        if ("HETHAN".equals(voucher)) return "VOUCHER_DA_HET_HAN";
-        if ("HETLUOT".equals(voucher)) return "VOUCHER_HET_LUOT_SU_DUNG";
-        if ("DONLON".equals(voucher)) return "VOUCHER_CHUA_DAT_GIA_TRI_TOI_THIEU";
-        if ("COD".equalsIgnoreCase(draft.paymentMethod()) && draft.subtotal() > MAX_COD_THRESHOLD) {
+        // Xác thực qua Entity Voucher (logic thật về hạn dùng, lượt dùng, giá trị tối thiểu)
+        Voucher voucher = draft.voucherObject() != null
+                ? draft.voucherObject()
+                : Voucher.from(draft.voucher(), draft.discount(), draft.today());
+        String voucherError = voucher.validate(Money.of(draft.subtotal()), draft.today());
+        if (voucherError != null) {
+            return voucherError;
+        }
+
+        // Ràng buộc thanh toán COD
+        var paymentStrategy = PaymentStrategyFactory.from(draft.paymentMethod());
+        if (paymentStrategy.requiresPrepayment(draft.subtotal(), MAX_COD_THRESHOLD)) {
             return "COD_VUOT_NGUONG_3000000_PHAI_THANH_TOAN_TRUOC";
         }
+
         return null;
     }
 
     public String determineInitialStatus(String paymentMethod) {
-        return "COD".equalsIgnoreCase(paymentMethod) ? "DA_XAC_NHAN" : "CHO_THANH_TOAN";
+        return PaymentStrategyFactory.from(paymentMethod).determineInitialStatus().code();
     }
 
     public record OrderDraft(String role, boolean verified, String sku, int quantity, double unitPrice,
                              LocalDate expiryDate, int availableStock, String shippingInfo, String voucher,
-                             double discount, String paymentMethod, LocalDate today) {
+                             double discount, String paymentMethod, LocalDate today,
+                             ShippingInfo shippingInfoObject, Voucher voucherObject) {
+
+        public OrderDraft(String role, boolean verified, String sku, int quantity, double unitPrice,
+                          LocalDate expiryDate, int availableStock, String shippingInfo, String voucher,
+                          double discount, String paymentMethod, LocalDate today) {
+            this(role, verified, sku, quantity, unitPrice, expiryDate, availableStock,
+                    shippingInfo, voucher, discount, paymentMethod, today, null, null);
+        }
+
         public double subtotal() { return quantity * unitPrice; }
     }
 }

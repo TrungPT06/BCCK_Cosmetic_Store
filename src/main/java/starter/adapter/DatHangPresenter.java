@@ -1,18 +1,29 @@
 package starter.adapter;
 
+import starter.usecase.DatHangOutputBoundary;
 import starter.usecase.DatHangResponse;
 
 /**
- * Presenter khiêm tốn (Humble Presenter): ánh xạ DTO phản hồi sang dữ liệu chỉ phục vụ hiển thị.
- *
- * Nguyên tắc đơn nhiệm (Single Responsibility): chuyển đổi dữ liệu nghiệp vụ sang dữ liệu hiển thị.
- * determineStatusColor thuộc về đây vì màu sắc là mối bận tâm về trình bày (presentation),
- * không phải quy tắc nghiệp vụ doanh nghiệp (Enterprise Business Rules).
+ * Presenter khiêm tốn (Humble Presenter): cài đặt DatHangOutputBoundary.
+ * Chuyển đổi dữ liệu nghiệp vụ (DatHangResponse) sang dữ liệu hiển thị (DatHangViewModel).
  */
-public final class DatHangPresenter {
-    public DatHangViewModel present(DatHangResponse r) {
+public final class DatHangPresenter implements DatHangOutputBoundary {
+    private DatHangViewModel viewModel;
+
+    @Override
+    public void present(DatHangResponse r) {
         String color = r.success() ? determineStatusColor(r.orderStatus()) : "red";
-        return new DatHangViewModel(r.message(), r.totalAmount(), color);
+        this.viewModel = new DatHangViewModel(r.message(), r.totalAmount(), color);
+    }
+
+    /** Hỗ trợ tương thích ngược cho các unit test gọi trực tiếp hàm present */
+    public DatHangViewModel presentAndGet(DatHangResponse r) {
+        present(r);
+        return viewModel;
+    }
+
+    public DatHangViewModel getViewModel() {
+        return viewModel;
     }
 
     public String determineStatusColor(String status) {

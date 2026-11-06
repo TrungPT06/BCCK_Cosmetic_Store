@@ -3,6 +3,7 @@ package starter.stepdefinitions;
 import io.cucumber.java.en.*;
 import starter.adapter.ThanhToanPresenter;
 import starter.entity.PaymentPolicy;
+import starter.infrastructure.DefaultPaymentGateway;
 import starter.infrastructure.InMemoryPaymentRepository;
 import starter.usecase.*;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ThanhToanStepDefinitions {
     private final InMemoryPaymentRepository repo = new InMemoryPaymentRepository();
+    private final DefaultPaymentGateway paymentGateway = new DefaultPaymentGateway();
     private final ThanhToanPresenter presenter = new ThanhToanPresenter();
     private String role, userId = "an", orderOwner = "an", orderStatus, paymentMethod, action;
     private double totalAmount = 700_000;
@@ -35,8 +37,9 @@ public class ThanhToanStepDefinitions {
         this.action = action;
         var request = new ThanhToanRequest(role, userId, orderOwner, orderStatus, paymentMethod,
                 totalAmount, action, gateway, totalAmount, "HOP_LE", minutesSinceCreated, recordedBefore);
-        response = new ThanhToanUseCase(repo, new PaymentPolicy()).execute(request);
-        viewModel = presenter.present(response);
+        // UseCase điều phối qua Output Boundary (Presenter) và Gateway
+        response = new ThanhToanUseCase(repo, new PaymentPolicy(), null, paymentGateway, presenter).execute(request);
+        viewModel = presenter.getViewModel();
         var world = TestWorld.current();
         world.success = response.success(); world.message = response.message();
         world.color = viewModel.color(); world.processedDate = LocalDate.of(2026, 11, 4);
@@ -65,8 +68,8 @@ public class ThanhToanStepDefinitions {
         String gw = "KHONG_AP_DUNG".equals(gateway) ? null : gateway;
         var request = new ThanhToanRequest(role, userId, orderOwner, orderStatus, paymentMethod,
                 totalAmount, action, gw, amount, signature, minutesSinceCreated, recordedBefore);
-        response = new ThanhToanUseCase(repo, new PaymentPolicy()).execute(request);
-        viewModel = presenter.present(response);
+        response = new ThanhToanUseCase(repo, new PaymentPolicy(), null, paymentGateway, presenter).execute(request);
+        viewModel = presenter.getViewModel();
         var world = TestWorld.current();
         world.success = response.success(); world.message = response.message();
         world.color = viewModel.color(); world.processedDate = LocalDate.of(2026, 11, 4);
