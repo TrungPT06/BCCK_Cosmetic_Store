@@ -31,16 +31,21 @@ public class Voucher {
         if (voucherCode == null || "KHONG_DUNG".equalsIgnoreCase(voucherCode)) {
             return noVoucher();
         }
+        double actualDiscount = discount;
+        if (actualDiscount <= 0) {
+            if ("GIAM50K".equalsIgnoreCase(voucherCode)) actualDiscount = 50_000.0;
+            else if ("GIAM500K".equalsIgnoreCase(voucherCode)) actualDiscount = 500_000.0;
+        }
         if ("HETHAN".equalsIgnoreCase(voucherCode)) {
-            return new Voucher("HETHAN", Money.of(discount), Money.ZERO, today.minusDays(1), 10);
+            return new Voucher("HETHAN", Money.of(actualDiscount), Money.ZERO, today.minusDays(1), 10);
         }
         if ("HETLUOT".equalsIgnoreCase(voucherCode)) {
-            return new Voucher("HETLUOT", Money.of(discount), Money.ZERO, today.plusMonths(1), 0);
+            return new Voucher("HETLUOT", Money.of(actualDiscount), Money.ZERO, today.plusMonths(1), 0);
         }
         if ("DONLON".equalsIgnoreCase(voucherCode)) {
-            return new Voucher("DONLON", Money.of(discount), Money.of(10_000_000.0), today.plusMonths(1), 10);
+            return new Voucher("DONLON", Money.of(actualDiscount), Money.of(10_000_000.0), today.plusMonths(1), 10);
         }
-        return new Voucher(voucherCode, Money.of(discount), Money.ZERO, today.plusMonths(6), 10);
+        return new Voucher(voucherCode, Money.of(actualDiscount), Money.ZERO, today.plusMonths(6), 10);
     }
 
     public String code() {

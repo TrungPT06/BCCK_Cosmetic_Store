@@ -50,10 +50,18 @@ public class DatHangStepDefinitions {
     @Given("T áp dụng voucher {word}")
     public void voucherOnly(String voucher) {
         this.voucher = voucher;
-        seedVoucher(voucher, 0);
+        if ("GIAM50K".equalsIgnoreCase(voucher)) {
+            this.discount = 50_000.0;
+        } else if ("GIAM500K".equalsIgnoreCase(voucher)) {
+            this.discount = 500_000.0;
+        } else {
+            this.discount = 0.0;
+        }
+        seedVoucher(voucher, this.discount);
     }
 
     @When("T thực hiện thao tác DAT_HANG với phương thức thanh toán {word}")
+    @When("T đặt hàng với phương thức thanh toán {word}")
     @When("T đặt đơn hàng với phương thức thanh toán {word}")
     public void order(String payment) {
         paymentMethod = payment;
@@ -73,6 +81,13 @@ public class DatHangStepDefinitions {
         assertEquals(status, response.orderStatus());
         assertEquals(total, response.totalAmount());
         assertEquals(color, viewModel.color());
+    }
+
+    @Then("T được thông báo trạng thái đơn hàng là {word} với tổng thanh toán là {double}")
+    public void successWithoutColor(String status, double total) {
+        assertTrue(response.success());
+        assertEquals(status, response.orderStatus());
+        assertEquals(total, response.totalAmount());
     }
 
     @Then("phí vận chuyển áp dụng là {double} và tồn kho khả dụng của sản phẩm {word} còn {int}")

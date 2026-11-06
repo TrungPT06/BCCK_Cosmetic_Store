@@ -51,6 +51,11 @@ public class ThanhToanStepDefinitions {
         assertTrue(response.success()); assertEquals(orderSt, response.orderStatusAfter()); assertEquals(paySt, response.paymentStatus()); assertEquals(color, viewModel.color());
     }
 
+    @Then("T được thông báo trạng thái đơn là {word} và tình trạng thanh toán là {word}")
+    public void paymentResultWithoutColor(String orderSt, String paySt) {
+        assertTrue(response.success()); assertEquals(orderSt, response.orderStatusAfter()); assertEquals(paySt, response.paymentStatus());
+    }
+
     @Then("trạng thái đơn không thay đổi và không có giao dịch nào được ghi nhận")
     public void noPaymentChange() { assertFalse(response.success()); }
 
