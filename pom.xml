@@ -245,12 +245,28 @@
                                     <outputDirectory>${project.build.directory}/site/serenity</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
-                            <fileMappers>
-                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
-                                    <pattern>^report-resources/(.*)$</pattern>
-                                    <replacement>$1</replacement>
-                                </fileMapper>
-                            </fileMappers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-serenity-resources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/site/serenity</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/site/serenity/report-resources</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
