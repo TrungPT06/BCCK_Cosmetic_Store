@@ -1,9 +1,9 @@
 package starter.entity;
 
 /**
- * Enterprise policy for merchandise pricing.
+ * Chính sách doanh nghiệp (Enterprise Policy) cho việc định giá tiền hàng.
  *
- * Single Responsibility: chỉ chịu trách nhiệm tính tiền hàng sau giảm giá.
+ * Nguyên tắc đơn nhiệm (Single Responsibility): chỉ chịu trách nhiệm tính tiền hàng sau giảm giá.
  * Thay đổi khi: quy tắc tính giá hoặc giới hạn giảm giá thay đổi.
  * Đảm bảo bất biến: tiền hàng không bao giờ âm.
  */

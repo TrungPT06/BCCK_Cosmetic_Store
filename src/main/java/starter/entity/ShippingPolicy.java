@@ -1,10 +1,10 @@
 package starter.entity;
 
 /**
- * Enterprise policy for shipping fee calculation.
+ * Chính sách doanh nghiệp (Enterprise Policy) tính phí vận chuyển.
  *
- * Single Responsibility: chỉ chịu trách nhiệm tính phí vận chuyển.
- * Thay đổi khi: ngưỡng miễn phí ship hoặc biểu phí ship thay đổi.
+ * Nguyên tắc đơn nhiệm (Single Responsibility): chỉ chịu trách nhiệm tính phí vận chuyển.
+ * Thay đổi khi: ngưỡng miễn phí vận chuyển hoặc biểu phí vận chuyển thay đổi.
  */
 public final class ShippingPolicy {
     private static final double FREE_SHIPPING_THRESHOLD = 500_000.0;

@@ -3,11 +3,11 @@ package starter.stepdefinitions;
 import java.time.LocalDate;
 
 /**
- * Scenario-scoped shared state between step definition classes.
- * Uses a ThreadLocal-backed singleton so that Serenity's SerenityObjectFactory
- * (which requires no-arg constructors) can still share state across step classes.
+ * Trạng thái dùng chung trong phạm vi kịch bản (Scenario-scoped) giữa các lớp định nghĩa bước.
+ * Sử dụng singleton được hỗ trợ bởi ThreadLocal để SerenityObjectFactory của Serenity
+ * (vốn yêu cầu hàm khởi tạo không tham số) vẫn có thể chia sẻ trạng thái qua các lớp bước.
  *
- * Each scenario resets via the @Before hook in CucumberHooks.
+ * Mỗi kịch bản được thiết lập lại qua hook @Before trong CucumberHooks.
  */
 public class TestWorld {
     private static final ThreadLocal<TestWorld> INSTANCE = ThreadLocal.withInitial(TestWorld::new);

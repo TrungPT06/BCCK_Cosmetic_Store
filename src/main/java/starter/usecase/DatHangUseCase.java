@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Application Use Case: đặt hàng mỹ phẩm.
+ * Trường hợp sử dụng ứng dụng (Application Use Case): đặt hàng mỹ phẩm.
  *
- * Điều phối luồng nghiệp vụ bằng cách phối hợp các policy chuyên biệt (SRP):
+ * Điều phối luồng nghiệp vụ bằng cách phối hợp các chính sách (policy) chuyên biệt (SRP):
  * - OrderPolicy: kiểm tra bất biến nghiệp vụ
  * - ShippingPolicy: tính phí vận chuyển
  * - PricingPolicy: tính tiền hàng sau giảm giá
  * - ProductClassification: phân loại sản phẩm
  *
- * Tồn kho được query trực tiếp từ Repository (Single Source of Truth),
+ * Tồn kho được truy vấn trực tiếp từ Repository (Single Source of Truth),
  * không nhận từ request bên ngoài.
  */
 public final class DatHangUseCase implements DatHangInputBoundary {
@@ -40,7 +40,7 @@ public final class DatHangUseCase implements DatHangInputBoundary {
 
     @Override
     public DatHangResponse execute(DatHangRequest r) {
-        // Query tồn kho từ Repository — nguồn dữ liệu duy nhất (Single Source of Truth)
+        // Truy vấn tồn kho từ Repository — nguồn dữ liệu chân lý duy nhất (Single Source of Truth)
         int currentStock = orders.stockOf(r.sku());
         int currentGiftStock = hasGift(r.giftSku()) ? orders.stockOf(r.giftSku()) : 0;
 

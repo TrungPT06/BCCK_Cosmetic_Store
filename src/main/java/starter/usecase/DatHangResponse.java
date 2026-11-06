@@ -1,9 +1,9 @@
 package starter.usecase;
 
 /**
- * Plain response DTO consumed by a presenter/controller.
+ * DTO phản hồi thuần túy được tiêu thụ bởi presenter/controller.
  *
- * color đã được loại bỏ — đó là concern hiển thị thuộc tầng Adapter (DatHangPresenter).
+ * color đã được loại bỏ — đó là mối bận tâm hiển thị thuộc tầng Adapter (DatHangPresenter).
  * UseCase chỉ trả dữ liệu nghiệp vụ, Presenter chịu trách nhiệm ánh xạ sang màu hiển thị.
  */
 public record DatHangResponse(boolean success, String message, String orderStatus, double totalAmount,

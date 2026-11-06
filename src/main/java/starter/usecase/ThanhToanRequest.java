@@ -1,6 +1,6 @@
 package starter.usecase;
 
-/** Plain request DTO for payment actions. */
+/** DTO yêu cầu thuần túy cho các thao tác thanh toán. */
 public record ThanhToanRequest(
     String role, String userId, String orderOwner,
     String orderStatus, String paymentMethod, double totalAmount,

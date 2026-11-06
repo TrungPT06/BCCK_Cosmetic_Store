@@ -3,7 +3,7 @@ package starter.stepdefinitions;
 import io.cucumber.java.Before;
 
 /**
- * Cucumber hooks – runs before each scenario to reset shared state.
+ * Cucumber hooks – chạy trước mỗi kịch bản (scenario) để thiết lập lại trạng thái dùng chung.
  */
 public class CucumberHooks {
     @Before

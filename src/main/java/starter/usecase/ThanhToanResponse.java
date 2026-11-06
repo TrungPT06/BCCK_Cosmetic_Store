@@ -1,6 +1,6 @@
 package starter.usecase;
 
-/** Plain response DTO for payment actions. */
+/** DTO phản hồi thuần túy cho các thao tác thanh toán. */
 public record ThanhToanResponse(boolean success, String message,
                                  String orderStatusAfter, String paymentStatus,
                                  double refundAmount, boolean stockReleased,

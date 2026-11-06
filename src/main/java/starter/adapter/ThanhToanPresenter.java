@@ -2,7 +2,7 @@ package starter.adapter;
 
 import starter.usecase.ThanhToanResponse;
 
-/** Presenter for payment processing. */
+/** Presenter phục vụ xử lý và hiển thị thông tin thanh toán. */
 public final class ThanhToanPresenter {
     public ThanhToanViewModel present(ThanhToanResponse r) {
         String color = r.success() ? determineColor(r) : "red";

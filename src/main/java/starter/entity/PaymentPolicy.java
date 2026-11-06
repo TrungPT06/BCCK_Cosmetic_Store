@@ -1,11 +1,11 @@
 package starter.entity;
 
 /**
- * Enterprise policy for payment processing.
+ * Chính sách doanh nghiệp (Enterprise Policy) cho xử lý thanh toán.
  *
- * Single Responsibility: validates payment actions (online payment, COD confirmation,
- * timeout cancellation) and determines payment outcomes.
- * Thay đổi khi: quy tắc thanh toán, timeout, idempotency thay đổi.
+ * Nguyên tắc đơn nhiệm (Single Responsibility): xác thực các hành động thanh toán
+ * (thanh toán trực tuyến, xác nhận thu tiền COD, hủy do quá hạn) và xác định kết quả thanh toán.
+ * Thay đổi khi: quy tắc thanh toán, thời gian chờ (timeout), tính bất biến lặp lại (idempotency) thay đổi.
  */
 public final class PaymentPolicy {
     private static final int PAYMENT_TIMEOUT_MINUTES = 30;

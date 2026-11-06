@@ -8,12 +8,12 @@ import org.junit.platform.suite.api.Suite;
 import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 
 /**
- * Cucumber Test Suite - BDD vòng ngoài (Acceptance Tests).
+ * Cucumber Test Suite - Kiểm thử chấp nhận BDD vòng ngoài (Acceptance Tests).
  *
- * Chạy tất cả feature files trong thư mục resources/features/
- * với step definitions từ package starter.stepdefinitions.
+ * Chạy tất cả các tệp đặc tả (feature files) trong thư mục resources/features/
+ * với các định nghĩa bước (step definitions) từ package starter.stepdefinitions.
  *
- * Kết hợp với Serenity BDD để tạo Living Documentation.
+ * Kết hợp với Serenity BDD để tạo tài liệu sống (Living Documentation).
  */
 @Suite
 @IncludeEngines("cucumber")

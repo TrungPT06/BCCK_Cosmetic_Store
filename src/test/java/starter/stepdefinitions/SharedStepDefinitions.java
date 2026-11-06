@@ -6,8 +6,8 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Shared step definitions for step patterns used across multiple features.
- * Avoids DuplicateStepDefinitionException by defining each shared pattern once.
+ * Các định nghĩa bước (Step Definitions) dùng chung cho các mẫu bước xuất hiện ở nhiều feature.
+ * Tránh lỗi DuplicateStepDefinitionException bằng cách định nghĩa mỗi mẫu bước một lần duy nhất.
  */
 public class SharedStepDefinitions {
     private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("dd/MM/uuuu");

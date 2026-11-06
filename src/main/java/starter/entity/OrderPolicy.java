@@ -3,9 +3,9 @@ package starter.entity;
 import java.time.LocalDate;
 
 /**
- * Enterprise policy & domain service for cosmetic order validation.
+ * Chính sách doanh nghiệp (Enterprise Policy) và dịch vụ miền (Domain Service) xác thực đơn hàng mỹ phẩm.
  *
- * Single Responsibility: kiểm tra bất biến nghiệp vụ khi tạo đơn hàng
+ * Nguyên tắc đơn nhiệm (Single Responsibility): kiểm tra bất biến nghiệp vụ khi tạo đơn hàng
  * và xác định trạng thái vòng đời ban đầu của đơn.
  * Thay đổi khi: quy tắc xác thực đơn hàng hoặc vòng đời trạng thái thay đổi.
  *

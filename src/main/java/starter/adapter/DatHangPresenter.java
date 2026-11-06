@@ -3,10 +3,10 @@ package starter.adapter;
 import starter.usecase.DatHangResponse;
 
 /**
- * Humble presenter: maps the response DTO to display-only data.
+ * Presenter khiêm tốn (Humble Presenter): ánh xạ DTO phản hồi sang dữ liệu chỉ phục vụ hiển thị.
  *
- * Single Responsibility: chuyển đổi dữ liệu nghiệp vụ sang dữ liệu hiển thị.
- * determineStatusColor thuộc về đây vì màu sắc là concern trình bày (presentation),
+ * Nguyên tắc đơn nhiệm (Single Responsibility): chuyển đổi dữ liệu nghiệp vụ sang dữ liệu hiển thị.
+ * determineStatusColor thuộc về đây vì màu sắc là mối bận tâm về trình bày (presentation),
  * không phải quy tắc nghiệp vụ doanh nghiệp (Enterprise Business Rules).
  */
 public final class DatHangPresenter {

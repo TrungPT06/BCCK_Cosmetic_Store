@@ -51,7 +51,7 @@ public class ThanhToanStepDefinitions {
     @Then("trạng thái đơn không thay đổi và không có giao dịch nào được ghi nhận")
     public void noPaymentChange() { assertFalse(response.success()); }
 
-    /* --- Invalid scenario --- */
+    /* --- Kịch bản không hợp lệ --- */
     @Given("người dùng T là khách an có vai trò {word} đang xử lý đơn thuộc về khách {word} với phương thức {word}, tổng thanh toán {int} và trạng thái {word}")
     public void invalidPaymentSetup(String role, String owner, String method, int total, String status) {
         this.role = role; this.userId = "an"; this.orderOwner = owner;

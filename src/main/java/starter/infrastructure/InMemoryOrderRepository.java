@@ -4,7 +4,7 @@ import starter.entity.Order;
 import starter.usecase.OrderRepository;
 import java.util.*;
 
-/** Test/dev adapter. Its synchronized commit models the atomic inventory-and-order transaction. */
+/** Adapter cho môi trường kiểm thử/phát triển. Cơ chế commit đồng bộ mô phỏng giao dịch nguyên tử giữa tồn kho và đơn hàng. */
 public final class InMemoryOrderRepository implements OrderRepository {
     private final Map<String, Integer> stock = new HashMap<>();
     private final List<Order> orders = new ArrayList<>();
