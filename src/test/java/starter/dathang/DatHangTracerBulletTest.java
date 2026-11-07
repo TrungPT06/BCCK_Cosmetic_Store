@@ -1,6 +1,5 @@
 package starter.dathang;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -11,26 +10,20 @@ import starter.domain.Money;
 import starter.domain.Product;
 import starter.domain.Sku;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("tracer-bullet")
-@DisplayName("Lát cắt dọc Tracer Bullet: HTTP Controller -> UseCase -> Domain -> H2 Database")
+@DisplayName("Lát cắt dọc Tracer Bullet: Controller -> UseCase -> Domain -> H2 Database")
 class DatHangTracerBulletTest {
     private AppContainer container;
     private DatHangController controller;
-    private int port;
 
     @BeforeEach
-    void setUp() throws IOException {
-        // Khởi tạo container dùng cơ sở dữ liệu H2 thực sự
-        container = AppContainer.createProductionWithH2("jdbc:h2:mem:tracer_bullet;DB_CLOSE_DELAY=-1");
+    void setUp() {
+        // Khởi tạo container dùng cơ sở dữ liệu H2 thực tế
+        container = AppContainer.createProductionWithH2("jdbc:h2:mem:tracer_bullet_test;DB_CLOSE_DELAY=-1");
 
         // Seed product & inventory vào cơ sở dữ liệu / repository
         LocalDate today = LocalDate.of(2026, 11, 4);
@@ -40,24 +33,12 @@ class DatHangTracerBulletTest {
         ));
         container.inventoryRepository().reserve("SERUM_VITC_30", -10); // 10 items in stock
 
-        // Khởi chạy HTTP Server trên port ngẫu nhiên
-        controller = new DatHangController(container.datHangUseCase(), 0);
-        controller.start();
-        port = controller.getPort();
-    }
-
-    @AfterEach
-    void tearDown() {
-        if (controller != null) {
-            controller.stop();
-        }
+        controller = new DatHangController(container.datHangUseCase(), container.datHangPresenter());
     }
 
     @Test
-    @DisplayName("Gửi HTTP POST /api/orders đặt hàng thành công, dữ liệu lưu vào H2 và trả mã 201")
-    void tracerBulletHttpOrderToH2() throws Exception {
-        HttpClient client = HttpClient.newHttpClient();
-
+    @DisplayName("Gửi yêu cầu POST /api/orders đặt hàng thành công, dữ liệu lưu vào H2 và trả mã 201")
+    void tracerBulletOrderToH2() {
         String jsonPayload = """
                 {
                     "customerId": "cust-tracer",
@@ -78,13 +59,8 @@ class DatHangTracerBulletTest {
                 }
                 """;
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:" + port + "/api/orders"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        var httpRequest = DatHangController.HttpRequest.post("/api/orders", jsonPayload);
+        DatHangController.HttpResponse response = controller.handle(httpRequest);
 
         assertEquals(201, response.statusCode());
         assertTrue(response.body().contains("\"success\":true"));

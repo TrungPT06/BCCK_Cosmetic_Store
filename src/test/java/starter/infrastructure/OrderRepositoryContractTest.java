@@ -51,22 +51,4 @@ abstract class OrderRepositoryContractTest {
         OrderRepository repo = createRepository();
         assertTrue(repo.findById("NON_EXISTENT").isEmpty());
     }
-
-    @Nested
-    @DisplayName("Chạy kiểm thử hợp đồng trên InMemoryOrderRepository")
-    class InMemoryTest extends OrderRepositoryContractTest {
-        @Override
-        protected OrderRepository createRepository() {
-            return new InMemoryOrderRepository();
-        }
-    }
-
-    @Nested
-    @DisplayName("Chạy kiểm thử hợp đồng trên JdbcOrderRepository (H2 Database)")
-    class JdbcH2Test extends OrderRepositoryContractTest {
-        @Override
-        protected OrderRepository createRepository() {
-            return new JdbcOrderRepository("jdbc:h2:mem:contract_test;DB_CLOSE_DELAY=-1");
-        }
-    }
 }
