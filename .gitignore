@@ -1,7 +1,10 @@
 target/
-build
-out
-.gradle
+build/
+out/
+$out
+.gradle/
+.vscode/
+history/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

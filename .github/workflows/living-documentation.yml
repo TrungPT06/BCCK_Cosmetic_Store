@@ -2,13 +2,15 @@ name: Living Documentation
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
+
+permissions:
+  contents: write
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -21,10 +23,10 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      run: mvn -B verify --file pom.xml -Denvironment=with_screenshots
+      run: mvn -B verify --file pom.xml
 
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@4.1.1
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        branch: gh-pages # The branch the action should deploy to.
-        folder: target/site/serenity # The folder the action should deploy.
+        branch: gh-pages
+        folder: target/site/serenity
