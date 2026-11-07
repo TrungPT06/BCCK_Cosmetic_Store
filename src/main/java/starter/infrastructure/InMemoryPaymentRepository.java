@@ -1,63 +1,31 @@
 package starter.infrastructure;
 
-import starter.usecase.PaymentRepository;
+import starter.thanhtoan.usecase.PaymentRepository;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Adapter In-Memory cho PaymentRepository.
+ * Tuân thủ ISP: chỉ ghi và đếm số lượng giao dịch thanh toán.
+ */
 public final class InMemoryPaymentRepository implements PaymentRepository {
-    private String orderStatus;
-    private final Map<String, List<String>> transactionsByOrder = new HashMap<>();
-    private final List<String> transactions = new ArrayList<>();
-    private boolean stockReleased;
-
-    public void setOrderStatus(String status) { this.orderStatus = status; }
+    private final Map<String, List<String>> transactionsByOrder = new ConcurrentHashMap<>();
 
     @Override
-    public boolean recordTransaction(String orderId, String action, String paymentStatus) {
-        String record = action + "|" + paymentStatus;
-        transactions.add(record);
-        transactionsByOrder.computeIfAbsent(orderId, k -> new ArrayList<>()).add(record);
-        return true;
+    public void recordTransaction(String orderId, String action, String status) {
+        if (orderId == null) return;
+        String record = action + "|" + status;
+        transactionsByOrder.computeIfAbsent(orderId, k -> Collections.synchronizedList(new ArrayList<>())).add(record);
     }
 
     @Override
     public int transactionCount(String orderId) {
-        return transactionsByOrder.getOrDefault(orderId, List.of()).size();
+        if (orderId == null) return 0;
+        List<String> list = transactionsByOrder.get(orderId);
+        return list != null ? list.size() : 0;
     }
-
-    @Override
-    public boolean updateOrderStatus(String orderId, String newStatus) {
-        this.orderStatus = newStatus;
-        return true;
-    }
-
-    @Override
-    public boolean releaseStock(String orderId) {
-        this.stockReleased = true;
-        return true;
-    }
-
-    @Override public boolean recordTransaction(String action, String paymentStatus) {
-        return recordTransaction("default_order", action, paymentStatus);
-    }
-
-    @Override public boolean updateOrderStatus(String newStatus) {
-        this.orderStatus = newStatus;
-        return true;
-    }
-
-    @Override public boolean releaseStock() {
-        this.stockReleased = true;
-        return true;
-    }
-
-    @Override public int transactionCount() {
-        return transactions.size();
-    }
-
-    public boolean isStockReleased() { return stockReleased; }
-    public String getOrderStatus() { return orderStatus; }
-    public boolean hasTransactions() { return !transactions.isEmpty(); }
 }

@@ -1,14 +1,17 @@
 package starter.infrastructure;
 
-import starter.entity.Voucher;
-import starter.usecase.VoucherRepository;
+import starter.dathang.usecase.VoucherRepository;
+import starter.domain.Voucher;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Adapter In-Memory cho VoucherRepository.
+ */
 public final class InMemoryVoucherRepository implements VoucherRepository {
-    private final Map<String, Voucher> vouchers = new HashMap<>();
+    private final Map<String, Voucher> vouchers = new ConcurrentHashMap<>();
 
     @Override
     public Optional<Voucher> findByCode(String code) {
@@ -18,6 +21,8 @@ public final class InMemoryVoucherRepository implements VoucherRepository {
 
     @Override
     public void save(Voucher voucher) {
-        vouchers.put(voucher.code().toUpperCase(), voucher);
+        if (voucher != null) {
+            vouchers.put(voucher.code().toUpperCase(), voucher);
+        }
     }
 }

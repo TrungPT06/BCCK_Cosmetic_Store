@@ -1,36 +1,42 @@
 package starter.infrastructure;
 
-import starter.entity.Sku;
-import starter.usecase.InventoryRepository;
+import starter.dathang.usecase.InventoryRepository;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Triển khai InMemory cho InventoryRepository.
+ */
 public final class InMemoryInventoryRepository implements InventoryRepository {
-    private final Map<String, Integer> stock = new HashMap<>();
+    private final Map<String, Integer> stock = new ConcurrentHashMap<>();
 
     @Override
-    public int stockOf(Sku sku) {
-        return stock.getOrDefault(sku.value(), 0);
+    public int stockOf(String sku) {
+        if (sku == null) return 0;
+        return stock.getOrDefault(sku, 0);
     }
 
     @Override
-    public synchronized boolean reserve(Sku sku, int quantity) {
+    public synchronized boolean reserve(String sku, int quantity) {
+        if (sku == null) return false;
         int current = stockOf(sku);
         if (current < quantity) {
             return false;
         }
-        stock.put(sku.value(), current - quantity);
+        stock.put(sku, current - quantity);
         return true;
     }
 
     @Override
-    public synchronized void release(Sku sku, int quantity) {
-        stock.put(sku.value(), stockOf(sku) + quantity);
+    public synchronized void release(String sku, int quantity) {
+        if (sku == null) return;
+        stock.put(sku, stockOf(sku) + quantity);
     }
 
-    @Override
-    public void setStock(Sku sku, int quantity) {
-        stock.put(sku.value(), quantity);
+    public void setStock(String sku, int quantity) {
+        if (sku != null) {
+            stock.put(sku, quantity);
+        }
     }
 }

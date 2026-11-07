@@ -29,7 +29,7 @@ class ThanhToanUseCasesTest {
     private ThanhToanPresenter presenter;
     private Clock fixedClock;
 
-    private final LocalDateTime now = LocalDateTime.of(2026, 11, 4, 10, 0, 0);
+    private LocalDateTime now;
 
     @BeforeEach
     void setUp() {
@@ -39,6 +39,7 @@ class ThanhToanUseCasesTest {
         gateway = new FakePaymentGateway();
         presenter = new ThanhToanPresenter();
         fixedClock = Clock.fixed(Instant.parse("2026-11-04T10:00:00Z"), ZoneId.of("Asia/Ho_Chi_Minh"));
+        now = LocalDateTime.now(fixedClock);
 
         inventoryRepo.reserve("SERUM_VITC_30", -10); // stock = 10
     }

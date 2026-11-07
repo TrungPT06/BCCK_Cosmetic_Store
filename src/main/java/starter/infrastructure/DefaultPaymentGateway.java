@@ -1,16 +1,20 @@
 package starter.infrastructure;
 
-import starter.usecase.PaymentGateway;
+import starter.domain.Money;
+import starter.thanhtoan.usecase.PaymentGateway;
 
+/**
+ * Triển khai mặc định của cổng thanh toán trực tuyến.
+ */
 public final class DefaultPaymentGateway implements PaymentGateway {
     @Override
-    public VerificationResult verifyCallback(String signature, double callbackAmount, double orderTotal) {
-        if ("KHONG_HOP_LE".equalsIgnoreCase(signature)) {
-            return VerificationResult.invalidSignature();
+    public PaymentVerification verifyCallback(String signature, Money amount, Money expectedAmount) {
+        if (signature == null || signature.trim().isEmpty() || "KHONG_HOP_LE".equalsIgnoreCase(signature)) {
+            return PaymentVerification.invalidSignature();
         }
-        if (callbackAmount > 0 && Math.abs(callbackAmount - orderTotal) > 0.01) {
-            return VerificationResult.amountMismatch();
+        if (amount != null && expectedAmount != null && !amount.equals(expectedAmount)) {
+            return PaymentVerification.amountMismatch();
         }
-        return VerificationResult.valid();
+        return PaymentVerification.valid();
     }
 }
