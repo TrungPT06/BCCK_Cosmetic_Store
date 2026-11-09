@@ -859,7 +859,7 @@
                                                             valign="middle"
                                                             align="center"
                                                             style="background-color: #52B255;color: white;padding:8px;white-space: nowrap;">
-                                                                <span class="summary" title="38 passing tests">100%</span>
+                                                                <span class="summary" title="40 passing tests">100%</span>
                                                         </td>
                                                         <td class="pending-background summary summary-bar-cell"
                                                             width=0% valign="middle" align="center"
@@ -894,8 +894,8 @@
                                                            style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;border-color:#acb1b9;border-style:solid;border-width:1px;margin-top:20px;">
                                                         <tr>
                                                             <td class="overview" colspan="6"
-                                                                style="font-family:Helvetica, sans-serif;vertical-align:middle;font-weight:bold;font-size:1.1em;color:#515151;background-color:#EBEBEB;padding-bottom:4px;padding-top:4px;padding-left:5px;"><span>38 tests executed on</span>
-                                                                <span>Saturday November 07 2026 at 15:07</span>
+                                                                style="font-family:Helvetica, sans-serif;vertical-align:middle;font-weight:bold;font-size:1.1em;color:#515151;background-color:#EBEBEB;padding-bottom:4px;padding-top:4px;padding-left:5px;"><span>40 tests executed on</span>
+                                                                <span>Monday November 09 2026 at 06:25</span>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -913,7 +913,7 @@
                                                             <td class="for-passing legend-result"
                                                                 style="font-family:Helvetica, sans-serif;vertical-align:top;font-weight:bold;font-size:0.9em;padding-left:4px;color:#52B255;border-top-width:0.5px;border-top-style:solid;border-top-color:#DDDDDD;border-bottom-width:0.5px;border-bottom-style:solid;border-bottom-color:#DDDDDD;border-right-width:0.5px;border-right-style:solid;border-right-color:#DDDDDD;text-align:right;">
                                                                 <span class="success-badge"
-                                                                      style="border-radius:4px;padding-top:2px;padding-bottom:2px;padding-right:4px;padding-left:4px;white-space:nowrap;">38</span>
+                                                                      style="border-radius:4px;padding-top:2px;padding-bottom:2px;padding-right:4px;padding-left:4px;white-space:nowrap;">40</span>
                                                             </td>
 
                                                             <td class="for-pending legend-key legend-label" width="30%"
@@ -997,10 +997,10 @@
                                             </tr>
                                             <tr>
                                                 <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">1s</td>
-                                                <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">404ms</td>
-                                                <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">36ms</td>
-                                                <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">163ms</td>
-                                                <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">9ms</td>
+                                                <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">536ms</td>
+                                                <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">44ms</td>
+                                                <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">207ms</td>
+                                                <td style="font-family:Helvetica, sans-serif;vertical-align:top;color:grey;text-align:right;font-size:0.9em;">13ms</td>
                                             </tr>
                                         </table>
                                     </td>
@@ -1200,7 +1200,29 @@
                                         <td class="scenarioName"
                                             style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
 	                                        
-	                                        <a>từ chối hủy đơn hàng khi đơn đã giao thành công (Bug 2)</a>
+	                                        <a>8: xử lý thanh toán hợp lệ ( [8]</a>
+                                            <div>role=customer, payment_method=COD, order_status_before=DA_XAC_NHAN, minutes_since_created=10, recorded_before=0, action=HUY_DON, gateway_result=KHONG_AP_DUNG, order_status_after=DA_HUY, payment_status=CHUA_THANH_TOAN, refund_amount=0, stock_released=true</div>
+                                        </td>
+                                        <td>
+                                          
+
+	                                        <div>
+                                                <div>
+                                                    <span class="frequent-failure for-success"
+                                                          style="font-weight: bold; text-transform: uppercase;">success</span>
+                                                    
+                                                </div>
+                                                <div class="frequent-failure for-success"
+                                                     style="padding-left: 1em; padding-bottom: 0.5em;"></div>
+                                            </div>
+
+	                                    </td>
+                                
+											<tr>
+                                        <td class="scenarioName"
+                                            style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
+	                                        
+	                                        <a>từ chối hủy quá hạn khi đơn COD đã được xác nhận</a>
                                             
                                         </td>
                                         <td>
@@ -1222,7 +1244,29 @@
                                         <td class="scenarioName"
                                             style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
 	                                        
-	                                        <a>từ chối hủy đơn khi thời gian chưa quá hạn 30 phút (Bug 1)</a>
+	                                        <a>từ chối hủy đơn hàng khi đơn đã giao thành công</a>
+                                            
+                                        </td>
+                                        <td>
+                                          
+
+	                                        <div>
+                                                <div>
+                                                    <span class="frequent-failure for-success"
+                                                          style="font-weight: bold; text-transform: uppercase;">success</span>
+                                                    
+                                                </div>
+                                                <div class="frequent-failure for-success"
+                                                     style="padding-left: 1em; padding-bottom: 0.5em;"></div>
+                                            </div>
+
+	                                    </td>
+                                
+											<tr>
+                                        <td class="scenarioName"
+                                            style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
+	                                        
+	                                        <a>từ chối hủy đơn khi thời gian chưa quá hạn 30 phút</a>
                                             
                                         </td>
                                         <td>
@@ -1423,72 +1467,6 @@
                                         <td class="scenarioName"
                                             style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
 	                                        
-	                                        <a>từ chối đặt hàng khi voucher đã hết lượt sử dụng sau lần đặt trước (Bug 3)</a>
-                                            
-                                        </td>
-                                        <td>
-                                          
-
-	                                        <div>
-                                                <div>
-                                                    <span class="frequent-failure for-success"
-                                                          style="font-weight: bold; text-transform: uppercase;">success</span>
-                                                    
-                                                </div>
-                                                <div class="frequent-failure for-success"
-                                                     style="padding-left: 1em; padding-bottom: 0.5em;"></div>
-                                            </div>
-
-	                                    </td>
-                                
-											<tr>
-                                        <td class="scenarioName"
-                                            style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
-	                                        
-	                                        <a>1: đặt hàng có sản phẩm đặc thù và quà tặng kèm ( [1]</a>
-                                            <div>sku=NUOC_HOA_ROSE_50, qty=1, gift_sku=KHONG_CO, gift_stock=0, order_flag=HANG_HAN_CHE, gift_line_price=0, gift_stock_after=0</div>
-                                        </td>
-                                        <td>
-                                          
-
-	                                        <div>
-                                                <div>
-                                                    <span class="frequent-failure for-success"
-                                                          style="font-weight: bold; text-transform: uppercase;">success</span>
-                                                    
-                                                </div>
-                                                <div class="frequent-failure for-success"
-                                                     style="padding-left: 1em; padding-bottom: 0.5em;"></div>
-                                            </div>
-
-	                                    </td>
-                                
-											<tr>
-                                        <td class="scenarioName"
-                                            style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
-	                                        
-	                                        <a>2: đặt hàng có sản phẩm đặc thù và quà tặng kèm ( [2]</a>
-                                            <div>sku=SERUM_VITC_30, qty=1, gift_sku=MAU_THU_SERUM_5ML, gift_stock=20, order_flag=KHONG_CO, gift_line_price=0, gift_stock_after=19</div>
-                                        </td>
-                                        <td>
-                                          
-
-	                                        <div>
-                                                <div>
-                                                    <span class="frequent-failure for-success"
-                                                          style="font-weight: bold; text-transform: uppercase;">success</span>
-                                                    
-                                                </div>
-                                                <div class="frequent-failure for-success"
-                                                     style="padding-left: 1em; padding-bottom: 0.5em;"></div>
-                                            </div>
-
-	                                    </td>
-                                
-											<tr>
-                                        <td class="scenarioName"
-                                            style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
-	                                        
 	                                        <a>1: đặt hàng hợp lệ với chính sách phí vận chuyển và voucher ( [1]</a>
                                             <div>current_day_vn=04/11/2026, role=customer, sku=SERUM_VITC_30, qty=2, unit_price=450000, stock_qty=12, voucher=KHONG_DUNG, payment_method=COD, order_status=DA_XAC_NHAN, shipping_fee=0, total_amount=900000, remaining_stock=10</div>
                                         </td>
@@ -1601,6 +1579,72 @@
 	                                        
 	                                        <a>6: đặt hàng hợp lệ với chính sách phí vận chuyển và voucher ( [6]</a>
                                             <div>current_day_vn=04/11/2026, role=customer, sku=SON_3CE_TAUPE, qty=1, unit_price=350000, stock_qty=15, voucher=GIAM500K, payment_method=VNPAY, order_status=CHO_THANH_TOAN, shipping_fee=30000, total_amount=30000, remaining_stock=14</div>
+                                        </td>
+                                        <td>
+                                          
+
+	                                        <div>
+                                                <div>
+                                                    <span class="frequent-failure for-success"
+                                                          style="font-weight: bold; text-transform: uppercase;">success</span>
+                                                    
+                                                </div>
+                                                <div class="frequent-failure for-success"
+                                                     style="padding-left: 1em; padding-bottom: 0.5em;"></div>
+                                            </div>
+
+	                                    </td>
+                                
+											<tr>
+                                        <td class="scenarioName"
+                                            style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
+	                                        
+	                                        <a>từ chối đặt hàng khi voucher đã hết lượt sử dụng sau lần đặt trước</a>
+                                            
+                                        </td>
+                                        <td>
+                                          
+
+	                                        <div>
+                                                <div>
+                                                    <span class="frequent-failure for-success"
+                                                          style="font-weight: bold; text-transform: uppercase;">success</span>
+                                                    
+                                                </div>
+                                                <div class="frequent-failure for-success"
+                                                     style="padding-left: 1em; padding-bottom: 0.5em;"></div>
+                                            </div>
+
+	                                    </td>
+                                
+											<tr>
+                                        <td class="scenarioName"
+                                            style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
+	                                        
+	                                        <a>1: đặt hàng có sản phẩm đặc thù và quà tặng kèm ( [1]</a>
+                                            <div>sku=NUOC_HOA_ROSE_50, qty=1, gift_sku=KHONG_CO, gift_stock=0, order_flag=HANG_HAN_CHE, gift_line_price=0, gift_stock_after=0</div>
+                                        </td>
+                                        <td>
+                                          
+
+	                                        <div>
+                                                <div>
+                                                    <span class="frequent-failure for-success"
+                                                          style="font-weight: bold; text-transform: uppercase;">success</span>
+                                                    
+                                                </div>
+                                                <div class="frequent-failure for-success"
+                                                     style="padding-left: 1em; padding-bottom: 0.5em;"></div>
+                                            </div>
+
+	                                    </td>
+                                
+											<tr>
+                                        <td class="scenarioName"
+                                            style="font-family:Helvetica, sans-serif;font-size:14px;vertical-align:top;padding-left:32px;min-width:4em;width:55%;">
+	                                        
+	                                        <a>2: đặt hàng có sản phẩm đặc thù và quà tặng kèm ( [2]</a>
+                                            <div>sku=SERUM_VITC_30, qty=1, gift_sku=MAU_THU_SERUM_5ML, gift_stock=20, order_flag=KHONG_CO, gift_line_price=0, gift_stock_after=19</div>
                                         </td>
                                         <td>
                                           

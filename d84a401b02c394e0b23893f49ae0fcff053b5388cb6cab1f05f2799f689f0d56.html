@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>từ chối hủy đơn hàng khi đơn đã giao thành công (Bug 2)</title>
+    <title>từ chối hủy quá hạn khi đơn COD đã được xác nhận</title>
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
@@ -126,7 +126,7 @@
             thanh to&aacute;n đơn h&agrave;ng mỹ phẩm
         </a>
         >
-            Từ chối hủy đơn h&agrave;ng khi đơn đ&atilde; giao th&agrave;nh c&ocirc;ng (bug 2)
+            Từ chối hủy qu&aacute; hạn khi đơn COD đ&atilde; được x&aacute;c nhận
         </span>
         </div>
         <div class="rightbg"></div>
@@ -147,7 +147,7 @@
             <a href="576946480b52ad056d6f5bddf874399c83582ecf90963cc074a14c70580e7d9f.html"><i class="bi bi-chat-text"></i> Features</a>
         </li>
     </ul>
-    <span class="date-and-time"><a href="build-info.html"><i class="bi bi-info-circle"></i></a> Report generated 07-11-2026 15:07</span>
+    <span class="date-and-time"><a href="build-info.html"><i class="bi bi-info-circle"></i></a> Report generated 09-11-2026 06:25</span>
     <br style="clear:left"/>
 </div>
     <div class="clr"></div>
@@ -196,7 +196,7 @@
                             <span class="outcome-icon"><a href='##beforetable'><i class='bi bi-check-circle-fill success-icon fa-2x' title='SUCCESS'></i></a></span>
                             <span class="test-case-title">
                                 <span class="success-color">
-                                    từ chối hủy đơn h&agrave;ng khi đơn đ&atilde; giao th&agrave;nh c&ocirc;ng (Bug 2)
+                                    từ chối hủy qu&aacute; hạn khi đơn COD đ&atilde; được x&aacute;c nhận
                                         <span class="related-issue-title"></span>
                                 </span>
                             </span>
@@ -255,7 +255,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">029ms</span></td>
+                    <td width="100"><span class="top-level-step">045ms</span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -269,7 +269,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                Given người dùng T có vai trò customer đang xử lý đơn của khách an với phương thức COD, tổng thanh toán 700000 và trạng thái DA_GIAO
+                                                Given người dùng T có vai trò he_thong đang xử lý đơn của khách an với phương thức COD, tổng thanh toán 700000 và trạng thái DA_XAC_NHAN
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -277,7 +277,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">010ms</span></td>
+                    <td width="100"><span class="top-level-step">018ms</span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -291,7 +291,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                And đơn được tạo cách đây 100 phút và đã có 0 giao dịch thành công
+                                                And đơn được tạo cách đây 60 phút và đã có 0 giao dịch thành công
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -299,7 +299,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">007ms</span></td>
+                    <td width="100"><span class="top-level-step">006ms</span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -313,7 +313,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                When T thực hiện thao tác HUY_DON và cổng thanh toán trả kết quả KHONG_AP_DUNG với chữ ký hợp lệ và số tiền khớp với đơn
+                                                When T thực hiện thao tác HUY_QUA_HAN_THANH_TOAN và cổng thanh toán trả kết quả KHONG_AP_DUNG với chữ ký hợp lệ và số tiền khớp với đơn
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -321,7 +321,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step"></span></td>
+                    <td width="100"><span class="top-level-step">003ms</span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -335,7 +335,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                Then T được thông báo lỗi là KHONG_THE_HUY_DON_DA_GIAO
+                                                Then T được thông báo lỗi là DON_KHONG_O_TRANG_THAI_CHO_THANH_TOAN
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -343,7 +343,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">013ms</span></td>
+                    <td width="100"><span class="top-level-step">006ms</span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -370,7 +370,7 @@
             <tr class="test-SUCCESS">
                     <td colspan="2"></td>
                 <td width="130"><span class="top-level-step"><em>SUCCESS</em></span></td>
-                <td width="100"><span class="top-level-step"><em>0.16s</em></span></td>
+                <td width="100"><span class="top-level-step"><em>0.21s</em></span></td>
             </tr>
 
         </table>

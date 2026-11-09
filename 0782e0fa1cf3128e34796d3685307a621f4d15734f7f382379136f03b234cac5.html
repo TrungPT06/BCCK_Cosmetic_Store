@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>từ chối đặt hàng khi voucher đã hết lượt sử dụng sau lần đặt trước (Bug 3)</title>
+    <title>từ chối hủy đơn khi thời gian chưa quá hạn 30 phút</title>
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
@@ -122,11 +122,11 @@
             <a href="index.html" class="breadcrumbs">Home</a>
 
  <!-- inflection.of(breadcrumb.displayName).asATitle()-->
-            > <a href="ff4f57127619c51d2f3c8ff3dd6db3a872843f821b0cf5806b42856c46a01b15.html">
-            đặt h&agrave;ng mỹ phẩm từ giỏ h&agrave;ng
+            > <a href="0122e158074158c1c95e4e20839ddc06c06a14ba4511b3d553d353ba69e95b74.html">
+            thanh to&aacute;n đơn h&agrave;ng mỹ phẩm
         </a>
         >
-            Từ chối đặt h&agrave;ng khi voucher đ&atilde; hết lượt sử dụng sau lần đặt trước (bug 3)
+            Từ chối hủy đơn khi thời gian chưa qu&aacute; hạn 30 ph&uacute;t
         </span>
         </div>
         <div class="rightbg"></div>
@@ -147,7 +147,7 @@
             <a href="576946480b52ad056d6f5bddf874399c83582ecf90963cc074a14c70580e7d9f.html"><i class="bi bi-chat-text"></i> Features</a>
         </li>
     </ul>
-    <span class="date-and-time"><a href="build-info.html"><i class="bi bi-info-circle"></i></a> Report generated 07-11-2026 15:07</span>
+    <span class="date-and-time"><a href="build-info.html"><i class="bi bi-info-circle"></i></a> Report generated 09-11-2026 06:25</span>
     <br style="clear:left"/>
 </div>
     <div class="clr"></div>
@@ -162,7 +162,7 @@
                                 <div>
                                     <h3 class="discreet-story-header">
                                         <i class="fs-2 bi bi-chat-left-quote title-icon"></i>
-                                        <span class="story-header-title">Đặt Hàng Mỹ Phẩm Từ Giỏ Hàng </span>
+                                        <span class="story-header-title">Thanh Toán Đơn Hàng Mỹ Phẩm </span>
                                     </h3>
 
                                 </div>
@@ -180,7 +180,7 @@
                                     <span class="badge example-tag tag-badge" style="background:default;">
                                     <i class="bi bi-tag-fill"></i>&nbsp;
                                         <a class="tagLink" style="background:default;"
-                                           href="c87cee3673708e1a06df146b8c61f96c37698b561bc399d25a01814894e3a0f3.html">Dat-Hang
+                                           href="62290f1143df1d852fa97229d070b94daa88ed8e471dcf2e3f4023f583b4c6fb.html">Thanh-Toan
                                         </a>
                                 </span>
                                     
@@ -196,7 +196,7 @@
                             <span class="outcome-icon"><a href='##beforetable'><i class='bi bi-check-circle-fill success-icon fa-2x' title='SUCCESS'></i></a></span>
                             <span class="test-case-title">
                                 <span class="success-color">
-                                    từ chối đặt h&agrave;ng khi voucher đ&atilde; hết lượt sử dụng sau lần đặt trước (Bug 3)
+                                    từ chối hủy đơn khi thời gian chưa qu&aacute; hạn 30 ph&uacute;t
                                         <span class="related-issue-title"></span>
                                 </span>
                             </span>
@@ -247,7 +247,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                Given hệ thống xử lý các giao dịch vào ngày 04/11/2026
+                                                Given hệ thống xử lý thanh toán vào ngày 04/11/2026
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -255,7 +255,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">032ms</span></td>
+                    <td width="100"><span class="top-level-step">001ms</span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -269,7 +269,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                Given người dùng T có vai trò customer đã xác thực tài khoản
+                                                Given người dùng T có vai trò he_thong đang xử lý đơn của khách an với phương thức VNPAY, tổng thanh toán 700000 và trạng thái CHO_THANH_TOAN
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -277,7 +277,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">001ms</span></td>
+                    <td width="100"><span class="top-level-step"></span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -291,7 +291,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                And giỏ hàng của T có 1 sản phẩm SERUM_VITC_30 với đơn giá 450000, còn hạn sử dụng trên 6 tháng và tồn kho khả dụng 10
+                                                And đơn được tạo cách đây 15 phút và đã có 0 giao dịch thành công
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -299,7 +299,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">008ms</span></td>
+                    <td width="100"><span class="top-level-step"></span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -313,7 +313,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                And voucher VOUCHER_1_LAN có mức giảm 50000 và chỉ còn 1 lượt dùng
+                                                When T thực hiện thao tác HUY_QUA_HAN_THANH_TOAN và cổng thanh toán trả kết quả KHONG_AP_DUNG với chữ ký hợp lệ và số tiền khớp với đơn
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -321,7 +321,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">003ms</span></td>
+                    <td width="100"><span class="top-level-step"></span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -335,7 +335,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                When T đặt hàng với voucher VOUCHER_1_LAN và phương thức thanh toán COD
+                                                Then T được thông báo lỗi là CHUA_QUA_HAN_THANH_TOAN
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -343,7 +343,7 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">006ms</span></td>
+                    <td width="100"><span class="top-level-step">002ms</span></td>
                 </tr>
                 <tr class="test-SUCCESS">
 
@@ -357,7 +357,7 @@
                     <td class="step-description-column">
                         <div class="step-description">
                                 <span class="top-level-step">
-                                                Then đơn hàng lần 1 thành công và voucher VOUCHER_1_LAN còn 0 lượt dùng
+                                                And trạng thái đơn không thay đổi và không có giao dịch nào được ghi nhận
                                         </span>
                             <span class="evidence">
                                 </span>
@@ -365,56 +365,12 @@
                     </td>
 
                     <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">001ms</span></td>
-                </tr>
-                <tr class="test-SUCCESS">
-
-                    <td width="50" class="step-icon">
-                        <a name="6"></a>
-                            <span style="margin-left: 20px;"
-                                  class="top-level-icon"><a href='##beforetable'><i class='bi bi-check-circle-fill success-icon ' title='SUCCESS'></i></a>
-                                </span>
-                    </td>
-
-                    <td class="step-description-column">
-                        <div class="step-description">
-                                <span class="top-level-step">
-                                                When T tiếp tục đặt đơn thứ 2 với voucher VOUCHER_1_LAN
-                                        </span>
-                            <span class="evidence">
-                                </span>
-                        </div>
-                    </td>
-
-                    <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">003ms</span></td>
-                </tr>
-                <tr class="test-SUCCESS">
-
-                    <td width="50" class="step-icon">
-                        <a name="7"></a>
-                            <span style="margin-left: 20px;"
-                                  class="top-level-icon"><a href='##beforetable'><i class='bi bi-check-circle-fill success-icon ' title='SUCCESS'></i></a>
-                                </span>
-                    </td>
-
-                    <td class="step-description-column">
-                        <div class="step-description">
-                                <span class="top-level-step">
-                                                Then T được thông báo lỗi là VOUCHER_HET_LUOT_SU_DUNG
-                                        </span>
-                            <span class="evidence">
-                                </span>
-                        </div>
-                    </td>
-
-                    <td width="130"><span class="top-level-step">SUCCESS</span></td>
-                    <td width="100"><span class="top-level-step">001ms</span></td>
+                    <td width="100"><span class="top-level-step"></span></td>
                 </tr>
             <tr class="test-SUCCESS">
                     <td colspan="2"></td>
                 <td width="130"><span class="top-level-step"><em>SUCCESS</em></span></td>
-                <td width="100"><span class="top-level-step"><em>0.15s</em></span></td>
+                <td width="100"><span class="top-level-step"><em>0.03s</em></span></td>
             </tr>
 
         </table>
