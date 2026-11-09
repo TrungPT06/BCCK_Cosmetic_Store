@@ -1,5 +1,6 @@
 package starter.stepdefinitions;
 
+import starter.shared.port.*;
 import io.cucumber.java.en.*;
 import starter.dathang.adapter.DatHangPresenter;
 import starter.dathang.usecase.*;
@@ -211,7 +212,7 @@ public class DatHangStepDefinitions {
         verifyOrderSaved();
     }
 
-    /* --- Bug 3 Steps --- */
+    /* --- Voucher hết lượt sau lần đặt trước --- */
     @Given("voucher {word} có mức giảm {long} và chỉ còn {int} lượt dùng")
     public void seedVoucherWithUses(String code, long discount, int uses) {
         voucherRepository.save(new Voucher(code, Money.of(discount), Money.ZERO, today.plusMonths(1), uses));

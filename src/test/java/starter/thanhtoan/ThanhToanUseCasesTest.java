@@ -20,7 +20,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Đặc tả kiểm thử đơn vị cho các Use Case thanh toán (SRP, Boundary void, Bug 1, Bug 2)")
+@DisplayName("Đặc tả kiểm thử đơn vị cho các Use Case thanh toán (SRP, Boundary void)")
 class ThanhToanUseCasesTest {
     private InMemoryOrderRepository orderRepo;
     private InMemoryInventoryRepository inventoryRepo;
@@ -41,7 +41,7 @@ class ThanhToanUseCasesTest {
         fixedClock = Clock.fixed(Instant.parse("2026-11-04T10:00:00Z"), ZoneId.of("Asia/Ho_Chi_Minh"));
         now = LocalDateTime.now(fixedClock);
 
-        inventoryRepo.reserve("SERUM_VITC_30", -10); // stock = 10
+        inventoryRepo.setStock("SERUM_VITC_30", 10);
     }
 
     private Order createTestOrder(String id, String customerId, LocalDateTime createdAt,
@@ -106,7 +106,7 @@ class ThanhToanUseCasesTest {
     }
 
     @Test
-    @DisplayName("Bug 1: Hủy quá hạn khi chưa đủ 30 phút trả lỗi CHUA_QUA_HAN_THANH_TOAN")
+    @DisplayName("Hủy quá hạn khi chưa đủ 30 phút trả lỗi CHUA_QUA_HAN_THANH_TOAN")
     void timeoutCancelBefore30MinutesFails() {
         // Đơn mới tạo cách đây 10 phút (< 30 phút)
         createTestOrder("ORD-4", "an", now.minusMinutes(10), OrderStatus.CHO_THANH_TOAN, Money.of(700_000L));
@@ -124,7 +124,7 @@ class ThanhToanUseCasesTest {
     }
 
     @Test
-    @DisplayName("Bug 1 (thành công): Hủy quá hạn khi đã qua 31 phút thành công, nhả tồn kho")
+    @DisplayName("Hủy quá hạn (thành công): Hủy quá hạn khi đã qua 31 phút thành công, nhả tồn kho")
     void timeoutCancelAfter31MinutesSuccess() {
         createTestOrder("ORD-5", "an", now.minusMinutes(31), OrderStatus.CHO_THANH_TOAN, Money.of(700_000L));
         var useCase = new HuyDonUseCase(orderRepo, inventoryRepo, paymentRepo, presenter, fixedClock);
@@ -142,7 +142,7 @@ class ThanhToanUseCasesTest {
     }
 
     @Test
-    @DisplayName("Bug 2: Không thể hủy đơn hàng đã giao (DA_GIAO), trả lỗi KHONG_THE_HUY_DON_DA_GIAO")
+    @DisplayName("Không thể hủy đơn hàng đã giao (DA_GIAO), trả lỗi KHONG_THE_HUY_DON_DA_GIAO")
     void cannotCancelDeliveredOrder() {
         Order deliveredOrder = new Order("ORD-6", "an", now.minusDays(1), new DeliveredState(),
                 Money.of(700_000L), Money.ZERO, "KHONG_CO",
@@ -160,5 +160,51 @@ class ThanhToanUseCasesTest {
         assertFalse(vm.success());
         assertEquals("KHONG_THE_HUY_DON_DA_GIAO", vm.message());
         assertEquals(OrderStatus.DA_GIAO, orderRepo.findById("ORD-6").get().orderStatus());
+    }
+
+    @Test
+    @DisplayName("Hủy quá hạn: không được hủy đơn COD đã xác nhận dù đã quá 30 phút")
+    void timeoutCancelDoesNotCancelConfirmedOrder() {
+        createTestOrder("ORD-7", "an", now.minusMinutes(90), OrderStatus.DA_XAC_NHAN, Money.of(700_000L));
+        var useCase = new HuyDonUseCase(orderRepo, inventoryRepo, paymentRepo, presenter, fixedClock);
+
+        useCase.execute(new ThanhToanRequest("ORD-7", "he_thong", "he_thong", "HUY_QUA_HAN_THANH_TOAN",
+                null, Money.ZERO, null));
+
+        var vm = presenter.getViewModel();
+        assertFalse(vm.success());
+        assertEquals("DON_KHONG_O_TRANG_THAI_CHO_THANH_TOAN", vm.message());
+        assertEquals(OrderStatus.DA_XAC_NHAN, orderRepo.findById("ORD-7").get().orderStatus());
+    }
+
+    @Test
+    @DisplayName("Hủy đơn COD đã xác nhận nhưng chưa thu tiền: không hoàn tiền")
+    void cancelConfirmedCodOrderWithoutPaymentHasNoRefund() {
+        createTestOrder("ORD-8", "an", now.minusMinutes(10), OrderStatus.DA_XAC_NHAN, Money.of(700_000L));
+        var useCase = new HuyDonUseCase(orderRepo, inventoryRepo, paymentRepo, presenter, fixedClock);
+
+        useCase.execute(new ThanhToanRequest("ORD-8", "an", "customer", "HUY_DON", null, Money.ZERO, null));
+
+        var vm = presenter.getViewModel();
+        assertTrue(vm.success());
+        assertEquals("DA_HUY", vm.orderStatusAfter());
+        assertEquals("CHUA_THANH_TOAN", vm.paymentStatus());
+        assertEquals(0L, vm.refundAmount());
+    }
+
+    @Test
+    @DisplayName("Hủy đơn đã thanh toán online: hoàn đủ tiền và nhả tồn kho")
+    void cancelPaidOnlineOrderRefundsFullAmount() {
+        createTestOrder("ORD-9", "an", now.minusMinutes(60), OrderStatus.DA_XAC_NHAN, Money.of(700_000L));
+        paymentRepo.recordTransaction("ORD-9", "THANH_TOAN_ONLINE", "DA_THANH_TOAN");
+        var useCase = new HuyDonUseCase(orderRepo, inventoryRepo, paymentRepo, presenter, fixedClock);
+
+        useCase.execute(new ThanhToanRequest("ORD-9", "an", "customer", "HUY_DON", null, Money.ZERO, null));
+
+        var vm = presenter.getViewModel();
+        assertTrue(vm.success());
+        assertEquals("DA_HOAN_TIEN", vm.paymentStatus());
+        assertEquals(700_000L, vm.refundAmount());
+        assertTrue(vm.stockReleased());
     }
 }

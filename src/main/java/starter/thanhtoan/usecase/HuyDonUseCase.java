@@ -1,7 +1,7 @@
 package starter.thanhtoan.usecase;
 
-import starter.dathang.usecase.InventoryRepository;
-import starter.dathang.usecase.OrderRepository;
+import starter.shared.port.InventoryRepository;
+import starter.shared.port.OrderRepository;
 import starter.domain.Money;
 import starter.domain.Order;
 import starter.domain.OrderStatus;
@@ -13,9 +13,9 @@ import java.util.Objects;
 
 /**
  * Application Use Case (SRP): Hủy đơn hàng (Hủy thủ công hoặc Hủy do quá hạn thanh toán 30 phút).
- * Sửa các lỗi nghiệp vụ:
- * - Bug 1: Kiểm tra thời hạn 30 phút, chưa quá hạn thì từ chối CHUA_QUA_HAN_THANH_TOAN.
- * - Bug 2: Từ chối hủy đơn đã giao KHONG_THE_HUY_DON_DA_GIAO.
+ * Quy tắc:
+ * - Hủy quá hạn: chỉ áp dụng cho đơn CHO_THANH_TOAN và đã quá 30 phút, nếu chưa thì CHUA_QUA_HAN_THANH_TOAN.
+ * - Không thể hủy đơn đã giao: KHONG_THE_HUY_DON_DA_GIAO.
  */
 public final class HuyDonUseCase implements ThanhToanInputBoundary {
     private final OrderRepository orderRepository;
@@ -58,7 +58,12 @@ public final class HuyDonUseCase implements ThanhToanInputBoundary {
     }
 
     private void handleTimeoutCancel(Order order, String initialStatus, LocalDateTime now, LocalDate today) {
-        // Bug 1 Fix: Thẩm định xem đơn đã quá hạn 30 phút chưa
+        // Chỉ đơn đang chờ thanh toán mới được tự động hủy do quá hạn
+        if (order.orderStatus() != OrderStatus.CHO_THANH_TOAN) {
+            outputBoundary.present(ThanhToanResponse.failure(order.id(), initialStatus, "DON_KHONG_O_TRANG_THAI_CHO_THANH_TOAN", today));
+            return;
+        }
+        // Thẩm định xem đơn đã quá hạn 30 phút chưa
         if (!order.isPaymentExpired(now)) {
             outputBoundary.present(ThanhToanResponse.failure(order.id(), initialStatus, "CHUA_QUA_HAN_THANH_TOAN", today));
             return;
@@ -79,18 +84,19 @@ public final class HuyDonUseCase implements ThanhToanInputBoundary {
     }
 
     private void handleManualCancel(ThanhToanRequest request, Order order, String initialStatus, LocalDate today) {
-        if ("customer".equalsIgnoreCase(request.role()) && !request.userId().equals(order.customerId())) {
+        if ("customer".equalsIgnoreCase(request.role()) && !Objects.equals(request.userId(), order.customerId())) {
             outputBoundary.present(ThanhToanResponse.failure(order.id(), initialStatus, "DON_KHONG_THUOC_VE_NGUOI_DUNG", today));
             return;
         }
 
-        // Bug 2 Fix: Không thể hủy đơn hàng đã giao
+        // Không thể hủy đơn hàng đã giao
         if (order.orderStatus() == OrderStatus.DA_GIAO) {
             outputBoundary.present(ThanhToanResponse.failure(order.id(), initialStatus, "KHONG_THE_HUY_DON_DA_GIAO", today));
             return;
         }
 
-        boolean wasConfirmed = (order.orderStatus() == OrderStatus.DA_XAC_NHAN);
+        // Chỉ hoàn tiền khi đã có giao dịch thanh toán thành công được ghi nhận (COD chưa thu thì không hoàn)
+        boolean paid = paymentRepository.transactionCount(order.id()) > 0;
         try {
             order.cancel();
         } catch (IllegalStateException e) {
@@ -101,8 +107,8 @@ public final class HuyDonUseCase implements ThanhToanInputBoundary {
         orderRepository.save(order);
         releaseStock(order);
 
-        Money refundAmount = wasConfirmed ? order.total() : Money.ZERO;
-        String paymentStatus = wasConfirmed ? "DA_HOAN_TIEN" : "CHUA_THANH_TOAN";
+        Money refundAmount = paid ? order.total() : Money.ZERO;
+        String paymentStatus = paid ? "DA_HOAN_TIEN" : "CHUA_THANH_TOAN";
 
         outputBoundary.present(ThanhToanResponse.success(order.id(), initialStatus, "DA_HUY", paymentStatus,
                 refundAmount, true, false, today));

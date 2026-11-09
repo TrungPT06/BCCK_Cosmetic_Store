@@ -1,5 +1,6 @@
 package starter.app;
 
+import starter.shared.port.*;
 import starter.dathang.adapter.DatHangPresenter;
 import starter.dathang.usecase.*;
 import starter.domain.OrderFactory;
@@ -7,6 +8,7 @@ import starter.domain.OrderPolicy;
 import starter.domain.strategy.PaymentStrategyFactory;
 import starter.domain.strategy.StandardShippingFeeStrategy;
 import starter.infrastructure.*;
+import starter.thanhtoan.adapter.ThanhToanController;
 import starter.thanhtoan.adapter.ThanhToanPresenter;
 import starter.thanhtoan.usecase.*;
 
@@ -33,6 +35,7 @@ public final class AppContainer {
     private final ThanhToanOnlineUseCase thanhToanOnlineUseCase;
     private final XacNhanThuTienCodUseCase xacNhanThuTienCodUseCase;
     private final HuyDonUseCase huyDonUseCase;
+    private final ThanhToanController thanhToanController;
 
     public AppContainer(OrderRepository orderRepository,
                         ProductRepository productRepository,
@@ -72,6 +75,10 @@ public final class AppContainer {
 
         this.huyDonUseCase = new HuyDonUseCase(
                 orderRepository, inventoryRepository, paymentRepository, thanhToanPresenter, clock
+        );
+
+        this.thanhToanController = new ThanhToanController(
+                thanhToanOnlineUseCase, xacNhanThuTienCodUseCase, huyDonUseCase, thanhToanPresenter
         );
     }
 
@@ -114,4 +121,5 @@ public final class AppContainer {
     public ThanhToanOnlineUseCase thanhToanOnlineUseCase() { return thanhToanOnlineUseCase; }
     public XacNhanThuTienCodUseCase xacNhanThuTienCodUseCase() { return xacNhanThuTienCodUseCase; }
     public HuyDonUseCase huyDonUseCase() { return huyDonUseCase; }
+    public ThanhToanController thanhToanController() { return thanhToanController; }
 }

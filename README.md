@@ -56,6 +56,11 @@ src/main/java/starter/
 │       ├── ShippingFeeStrategy.java
 │       └── StandardShippingFeeStrategy.java
 │
+├── shared/                         # Dùng chung giữa các lát cắt (gỡ phụ thuộc chéo)
+│   └── port/                       # Tầng Use Case: Các Port dùng chung (ISP)
+│       ├── OrderRepository.java    # Port lưu trữ đơn hàng (ISP)
+│       └── InventoryRepository.java# Port quản lý tồn kho (ISP)
+│
 ├── dathang/                        # Lát cắt dọc: Đặt hàng
 │   ├── usecase/                    # Tầng Application Use Case
 │   │   ├── DatHangInputBoundary.java
@@ -63,8 +68,6 @@ src/main/java/starter/
 │   │   ├── DatHangRequest.java     # Pure DTO (không chứa logic / entity)
 │   │   ├── DatHangResponse.java    # Pure DTO
 │   │   ├── DatHangUseCase.java     # Điều phối luồng đặt hàng
-│   │   ├── OrderRepository.java    # Port lưu trữ đơn hàng (ISP)
-│   │   ├── InventoryRepository.java# Port quản lý tồn kho (ISP)
 │   │   ├── ProductRepository.java  # Port truy vấn sản phẩm
 │   │   └── VoucherRepository.java  # Port truy vấn & cập nhật voucher
 │   └── adapter/                    # Tầng Interface Adapters
@@ -83,7 +86,8 @@ src/main/java/starter/
 │   │   ├── PaymentGateway.java     # Port cổng thanh toán
 │   │   └── PaymentRepository.java  # Port ghi nhận nhật ký giao dịch
 │   └── adapter/                    # Tầng Interface Adapters
-│       └── ThanhToanPresenter.java # Presenter chuẩn bị ViewModel
+│       ├── ThanhToanPresenter.java # Presenter chuẩn bị ViewModel
+│       └── ThanhToanController.java# Controller tiếp nhận yêu cầu (Tracer Bullet)
 │
 ├── infrastructure/                 # Tầng Frameworks & Drivers
 │   ├── InMemoryOrderRepository.java

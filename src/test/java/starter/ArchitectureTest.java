@@ -24,9 +24,9 @@ public class ArchitectureTest {
 
     @ArchTest
     public static final ArchRule useCasesMustOnlyDependOnDomainAndUsecase =
-            classes().that().resideInAnyPackage("..dathang.usecase..", "..thanhtoan.usecase..")
+            classes().that().resideInAnyPackage("..dathang.usecase..", "..thanhtoan.usecase..", "..shared.port..")
                     .should().onlyDependOnClassesThat()
-                    .resideInAnyPackage("..domain..", "..dathang.usecase..", "..thanhtoan.usecase..", "java..");
+                    .resideInAnyPackage("..domain..", "..dathang.usecase..", "..thanhtoan.usecase..", "..shared.port..", "java..");
 
     @ArchTest
     public static final ArchRule adaptersMustNotDependOnInfrastructureOrApp =
@@ -35,10 +35,20 @@ public class ArchitectureTest {
                     .resideInAnyPackage("..infrastructure..", "..app..");
 
     @ArchTest
+    public static final ArchRule thanhToanMustNotDependOnDatHang =
+            noClasses().that().resideInAnyPackage("..thanhtoan..")
+                    .should().dependOnClassesThat().resideInAnyPackage("..dathang..");
+
+    @ArchTest
+    public static final ArchRule datHangMustNotDependOnThanhToan =
+            noClasses().that().resideInAnyPackage("..dathang..")
+                    .should().dependOnClassesThat().resideInAnyPackage("..thanhtoan..");
+
+    @ArchTest
     public static final ArchRule cleanArchitectureLayersRule =
             layeredArchitecture().consideringAllDependencies()
                     .layer("Domain").definedBy("starter.domain..")
-                    .layer("UseCase").definedBy("starter.dathang.usecase..", "starter.thanhtoan.usecase..")
+                    .layer("UseCase").definedBy("starter.dathang.usecase..", "starter.thanhtoan.usecase..", "starter.shared.port..")
                     .layer("Adapter").definedBy("starter.dathang.adapter..", "starter.thanhtoan.adapter..")
                     .layer("Infrastructure").definedBy("starter.infrastructure..")
                     .layer("App").definedBy("starter.app..")

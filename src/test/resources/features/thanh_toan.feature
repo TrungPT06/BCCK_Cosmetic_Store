@@ -24,6 +24,7 @@ Feature: thanh toán đơn hàng mỹ phẩm
       | admin    | COD            | DA_GIAO             | 4320                  | 0               | XAC_NHAN_THU_TIEN_COD          | KHONG_AP_DUNG  | DA_GIAO            | DA_THANH_TOAN   | 0             | false          |
       | he_thong | VNPAY          | CHO_THANH_TOAN      | 31                    | 0               | HUY_QUA_HAN_THANH_TOAN         | KHONG_AP_DUNG  | DA_HUY             | CHUA_THANH_TOAN | 0             | true           |
       | customer | VNPAY          | DA_XAC_NHAN         | 60                    | 1               | HUY_DON                        | KHONG_AP_DUNG  | DA_HUY             | DA_HOAN_TIEN    | 700000        | true           |
+      | customer | COD            | DA_XAC_NHAN         | 10                    | 0               | HUY_DON                        | KHONG_AP_DUNG  | DA_HUY             | CHUA_THANH_TOAN | 0             | true           |
 
 
   Scenario Outline: xử lý thanh toán không hợp lệ
@@ -45,7 +46,7 @@ Feature: thanh toán đơn hàng mỹ phẩm
       | admin    | an    | COD            | DANG_GIAO           | XAC_NHAN_THU_TIEN_COD | KHONG_AP_DUNG  | 0              | KHONG_AP_DUNG | DON_COD_CHUA_GIAO_CHUA_THE_XAC_NHAN_THU_TIEN |
 
 
-  Scenario: từ chối hủy đơn khi thời gian chưa quá hạn 30 phút (Bug 1)
+  Scenario: từ chối hủy đơn khi thời gian chưa quá hạn 30 phút
     Given người dùng T có vai trò he_thong đang xử lý đơn của khách an với phương thức VNPAY, tổng thanh toán 700000 và trạng thái CHO_THANH_TOAN
     And đơn được tạo cách đây 15 phút và đã có 0 giao dịch thành công
     When T thực hiện thao tác HUY_QUA_HAN_THANH_TOAN và cổng thanh toán trả kết quả KHONG_AP_DUNG với chữ ký hợp lệ và số tiền khớp với đơn
@@ -53,9 +54,16 @@ Feature: thanh toán đơn hàng mỹ phẩm
     And trạng thái đơn không thay đổi và không có giao dịch nào được ghi nhận
 
 
-  Scenario: từ chối hủy đơn hàng khi đơn đã giao thành công (Bug 2)
+  Scenario: từ chối hủy đơn hàng khi đơn đã giao thành công 
     Given người dùng T có vai trò customer đang xử lý đơn của khách an với phương thức COD, tổng thanh toán 700000 và trạng thái DA_GIAO
     And đơn được tạo cách đây 100 phút và đã có 0 giao dịch thành công
     When T thực hiện thao tác HUY_DON và cổng thanh toán trả kết quả KHONG_AP_DUNG với chữ ký hợp lệ và số tiền khớp với đơn
     Then T được thông báo lỗi là KHONG_THE_HUY_DON_DA_GIAO
+    And trạng thái đơn không thay đổi và không có giao dịch nào được ghi nhận
+
+  Scenario: từ chối hủy quá hạn khi đơn COD đã được xác nhận
+    Given người dùng T có vai trò he_thong đang xử lý đơn của khách an với phương thức COD, tổng thanh toán 700000 và trạng thái DA_XAC_NHAN
+    And đơn được tạo cách đây 60 phút và đã có 0 giao dịch thành công
+    When T thực hiện thao tác HUY_QUA_HAN_THANH_TOAN và cổng thanh toán trả kết quả KHONG_AP_DUNG với chữ ký hợp lệ và số tiền khớp với đơn
+    Then T được thông báo lỗi là DON_KHONG_O_TRANG_THAI_CHO_THANH_TOAN
     And trạng thái đơn không thay đổi và không có giao dịch nào được ghi nhận

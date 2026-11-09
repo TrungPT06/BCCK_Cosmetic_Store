@@ -1,6 +1,6 @@
 package starter.infrastructure;
 
-import starter.dathang.usecase.InventoryRepository;
+import starter.shared.port.InventoryRepository;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

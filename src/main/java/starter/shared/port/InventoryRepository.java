@@ -1,4 +1,4 @@
-package starter.dathang.usecase;
+package starter.shared.port;
 
 /**
  * Port quản lý tồn kho sản phẩm (Interface Segregation Principle - ISP).

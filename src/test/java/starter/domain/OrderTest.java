@@ -30,7 +30,7 @@ class OrderTest {
     }
 
     @Test
-    @DisplayName("Không thể hủy đơn hàng đã giao (Bug 2)")
+    @DisplayName("Không thể hủy đơn hàng đã giao")
     void cannotCancelDeliveredOrder() {
         LocalDateTime createdAt = LocalDateTime.of(2026, 11, 4, 10, 0, 0);
         Order order = new Order("ORD-2", "an", createdAt,

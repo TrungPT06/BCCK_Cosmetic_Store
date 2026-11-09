@@ -31,7 +31,7 @@ class DatHangTracerBulletTest {
                 Sku.of("SERUM_VITC_30"), "Serum Vitamin C 30ml",
                 Money.of(450_000L), today.plusYears(1), false
         ));
-        container.inventoryRepository().reserve("SERUM_VITC_30", -10); // 10 items in stock
+        ((starter.infrastructure.InMemoryInventoryRepository) container.inventoryRepository()).setStock("SERUM_VITC_30", 10);
 
         controller = new DatHangController(container.datHangUseCase(), container.datHangPresenter());
     }
@@ -69,5 +69,25 @@ class DatHangTracerBulletTest {
 
         // Kiểm tra tồn kho khả dụng giảm còn 8
         assertEquals(8, container.inventoryRepository().stockOf("SERUM_VITC_30"));
+    }
+
+    @Test
+    @DisplayName("Thiếu trường bắt buộc: trả 400 và không tạo đơn, không tự điền giá trị mặc định")
+    void missingRequiredFieldReturns400() {
+        var response = controller.handle(DatHangController.HttpRequest.post("/api/orders",
+                "{\"role\":\"customer\",\"verified\":true,\"paymentMethod\":\"COD\"}"));
+
+        assertEquals(400, response.statusCode());
+        assertTrue(response.body().contains("THIEU_TRUONG_BAT_BUOC_customerId"));
+    }
+
+    @Test
+    @DisplayName("Giỏ hàng trống: use case từ chối, trả 400")
+    void emptyCartReturns400() {
+        var response = controller.handle(DatHangController.HttpRequest.post("/api/orders", """
+                {"customerId":"an","role":"customer","verified":true,"paymentMethod":"COD",
+                 "recipientName":"An","phone":"0901234567","address":"1 Le Loi","city":"HCM","items":[]}"""));
+
+        assertEquals(400, response.statusCode());
     }
 }

@@ -1,6 +1,6 @@
 package starter.infrastructure;
 
-import starter.dathang.usecase.OrderRepository;
+import starter.shared.port.OrderRepository;
 import starter.domain.Order;
 
 import java.util.Map;

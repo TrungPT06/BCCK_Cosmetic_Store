@@ -1,6 +1,6 @@
 package starter.thanhtoan.usecase;
 
-import starter.dathang.usecase.OrderRepository;
+import starter.shared.port.OrderRepository;
 import starter.domain.Money;
 import starter.domain.Order;
 import starter.domain.OrderStatus;

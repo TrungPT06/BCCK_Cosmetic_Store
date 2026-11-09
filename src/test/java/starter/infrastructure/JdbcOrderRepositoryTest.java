@@ -1,7 +1,7 @@
 package starter.infrastructure;
 
 import org.junit.jupiter.api.DisplayName;
-import starter.dathang.usecase.OrderRepository;
+import starter.shared.port.OrderRepository;
 
 @DisplayName("Kiểm thử hợp đồng cho JdbcOrderRepository (H2 Database)")
 class JdbcOrderRepositoryTest extends OrderRepositoryContractTest {

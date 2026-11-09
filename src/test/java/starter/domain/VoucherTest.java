@@ -48,7 +48,7 @@ class VoucherTest {
     }
 
     @Test
-    @DisplayName("Giảm lượt dùng (decrementUsage) giảm số lần còn lại và hết lượt khi về 0 (Bug 3)")
+    @DisplayName("Giảm lượt dùng (decrementUsage) giảm số lần còn lại và hết lượt khi về 0")
     void decrementUsageDecreasesRemainingUses() {
         LocalDate today = LocalDate.of(2026, 11, 4);
         Voucher voucher = new Voucher("GIAM50K", Money.of(50_000L), Money.ZERO, today.plusMonths(1), 1);

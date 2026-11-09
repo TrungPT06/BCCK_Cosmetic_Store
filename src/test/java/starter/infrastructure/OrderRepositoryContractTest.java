@@ -3,7 +3,7 @@ package starter.infrastructure;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import starter.dathang.usecase.OrderRepository;
+import starter.shared.port.OrderRepository;
 import starter.domain.*;
 
 import java.time.LocalDateTime;

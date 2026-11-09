@@ -1,6 +1,6 @@
 package starter.infrastructure;
 
-import starter.dathang.usecase.OrderRepository;
+import starter.shared.port.OrderRepository;
 import starter.domain.*;
 import starter.domain.state.OrderStateFactory;
 

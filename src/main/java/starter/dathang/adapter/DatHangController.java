@@ -29,6 +29,11 @@ public final class DatHangController {
             return new HttpResponse(405, "{\"error\":\"METHOD_NOT_ALLOWED\"}");
         }
 
+        String missing = firstMissingField(request.body());
+        if (missing != null) {
+            return new HttpResponse(400, "{\"success\":false,\"message\":\"THIEU_TRUONG_BAT_BUOC_" + missing + "\"}");
+        }
+
         DatHangRequest req = parseRequest(request.body());
         datHangUseCase.execute(req);
 
@@ -51,18 +56,29 @@ public final class DatHangController {
         return new HttpResponse(statusCode, json);
     }
 
+    private static final String[] REQUIRED = {"customerId", "role", "paymentMethod", "recipientName", "phone", "address", "city"};
+
+    private String firstMissingField(String json) {
+        if (json == null || json.isBlank()) return "body";
+        for (String key : REQUIRED) {
+            if (extractString(json, key, null) == null) return key;
+        }
+        if (extractBoolean(json, "verified", null) == null) return "verified";
+        return null;
+    }
+
     private DatHangRequest parseRequest(String json) {
-        String customerId = extractString(json, "customerId", "an");
-        String role = extractString(json, "role", "customer");
-        boolean verified = extractBoolean(json, "verified", true);
+        String customerId = extractString(json, "customerId", null);
+        String role = extractString(json, "role", null);
+        boolean verified = extractBoolean(json, "verified", false);
         String voucherCode = extractString(json, "voucherCode", "KHONG_DUNG");
-        String paymentMethod = extractString(json, "paymentMethod", "COD");
+        String paymentMethod = extractString(json, "paymentMethod", null);
         String giftSku = extractString(json, "giftSku", "KHONG_CO");
 
-        String recipientName = extractString(json, "recipientName", "Nguyễn Văn An");
-        String phone = extractString(json, "phone", "0912345678");
-        String address = extractString(json, "address", "123 Đường Mỹ Phẩm");
-        String city = extractString(json, "city", "TP. Hồ Chí Minh");
+        String recipientName = extractString(json, "recipientName", null);
+        String phone = extractString(json, "phone", null);
+        String address = extractString(json, "address", null);
+        String city = extractString(json, "city", null);
 
         List<DatHangRequest.LineItem> items = new ArrayList<>();
         Pattern itemPattern = Pattern.compile("\\{\\s*\"sku\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"quantity\"\\s*:\\s*(\\d+)\\s*\\}");
@@ -70,9 +86,7 @@ public final class DatHangController {
         while (m.find()) {
             items.add(new DatHangRequest.LineItem(m.group(1), Integer.parseInt(m.group(2))));
         }
-        if (items.isEmpty()) {
-            items.add(new DatHangRequest.LineItem("SERUM_VITC_30", 2));
-        }
+        // Không tự thêm mặt hàng mặc định: giỏ hàng trống sẽ bị use case từ chối GIO_HANG_TRONG.
 
         return new DatHangRequest(
                 customerId, role, verified, items,
@@ -82,12 +96,12 @@ public final class DatHangController {
     }
 
     private String extractString(String json, String key, String defaultValue) {
-        Pattern p = Pattern.compile("\"" + key + "\"\\s*:\\s*\"([^\"]+)\"");
+        Pattern p = Pattern.compile("\"" + key + "\"\\s*:\\s*\"([^\"]*)\"");
         Matcher m = p.matcher(json);
         return m.find() ? m.group(1) : defaultValue;
     }
 
-    private boolean extractBoolean(String json, String key, boolean defaultValue) {
+    private Boolean extractBoolean(String json, String key, Boolean defaultValue) {
         Pattern p = Pattern.compile("\"" + key + "\"\\s*:\\s*(true|false)");
         Matcher m = p.matcher(json);
         return m.find() ? Boolean.parseBoolean(m.group(1)) : defaultValue;

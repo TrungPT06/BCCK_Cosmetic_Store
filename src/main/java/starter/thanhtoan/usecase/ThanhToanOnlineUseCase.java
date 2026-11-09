@@ -1,6 +1,6 @@
 package starter.thanhtoan.usecase;
 
-import starter.dathang.usecase.OrderRepository;
+import starter.shared.port.OrderRepository;
 import starter.domain.Money;
 import starter.domain.Order;
 import starter.domain.OrderStatus;
@@ -52,7 +52,7 @@ public final class ThanhToanOnlineUseCase implements ThanhToanInputBoundary {
             outputBoundary.present(ThanhToanResponse.failure(order.id(), initialStatus, "YEU_CAU_DANG_NHAP_HOAC_DANG_KY", today));
             return;
         }
-        if ("customer".equalsIgnoreCase(request.role()) && !request.userId().equals(order.customerId())) {
+        if ("customer".equalsIgnoreCase(request.role()) && !Objects.equals(request.userId(), order.customerId())) {
             outputBoundary.present(ThanhToanResponse.failure(order.id(), initialStatus, "DON_KHONG_THUOC_VE_NGUOI_DUNG", today));
             return;
         }

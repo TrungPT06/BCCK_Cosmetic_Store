@@ -1,8 +1,8 @@
 package starter.stepdefinitions;
 
 import io.cucumber.java.en.*;
-import starter.dathang.usecase.InventoryRepository;
-import starter.dathang.usecase.OrderRepository;
+import starter.shared.port.InventoryRepository;
+import starter.shared.port.OrderRepository;
 import starter.domain.*;
 import starter.infrastructure.FakePaymentGateway;
 import starter.infrastructure.InMemoryInventoryRepository;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ThanhToanStepDefinitions {
     private final OrderRepository orderRepository = new InMemoryOrderRepository();
-    private final InventoryRepository inventoryRepository = new InMemoryInventoryRepository();
+    private final InMemoryInventoryRepository inventoryRepository = new InMemoryInventoryRepository();
     private final PaymentRepository paymentRepository = new InMemoryPaymentRepository();
     private final FakePaymentGateway paymentGateway = new FakePaymentGateway();
     private final ThanhToanPresenter presenter = new ThanhToanPresenter();
@@ -80,7 +80,7 @@ public class ThanhToanStepDefinitions {
         LocalDateTime now = LocalDateTime.now(clock);
         LocalDateTime createdAt = now.minusMinutes(minutes);
 
-        inventoryRepository.reserve("SERUM_VITC_30", -10); // stock = 10
+        inventoryRepository.setStock("SERUM_VITC_30", 10);
 
         Order order = new Order(orderId, orderOwner, createdAt, OrderStatus.valueOf(orderStatusBefore),
                 Money.of(totalAmount), Money.ZERO, "KHONG_CO",

@@ -95,7 +95,7 @@ Feature: đặt hàng mỹ phẩm từ giỏ hàng
       | SERUM_VITC_30    | 1   | MAU_THU_SERUM_5ML | 20         | KHONG_CO     | 0               | 19               |
 
 
-  Scenario: từ chối đặt hàng khi voucher đã hết lượt sử dụng sau lần đặt trước (Bug 3)
+  Scenario: từ chối đặt hàng khi voucher đã hết lượt sử dụng sau lần đặt trước
     Given người dùng T có vai trò customer đã xác thực tài khoản
     And giỏ hàng của T có 1 sản phẩm SERUM_VITC_30 với đơn giá 450000, còn hạn sử dụng trên 6 tháng và tồn kho khả dụng 10
     And voucher VOUCHER_1_LAN có mức giảm 50000 và chỉ còn 1 lượt dùng

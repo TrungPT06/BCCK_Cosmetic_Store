@@ -1,5 +1,6 @@
 package starter.dathang.usecase;
 
+import starter.shared.port.*;
 import starter.domain.*;
 import starter.domain.strategy.ShippingFeeStrategy;
 
@@ -53,13 +54,15 @@ public final class DatHangUseCase implements DatHangInputBoundary {
         LocalDate today = LocalDate.now(clock);
         LocalDateTime now = LocalDateTime.now(clock);
 
+        List<DatHangRequest.LineItem> requestItems = request.items() != null ? request.items() : List.of();
+
         // 1. Nạp danh sách sản phẩm và thẩm định từng dòng
         List<OrderPolicy.ItemValidation> itemValidations = new ArrayList<>();
         Money merchandiseTotal = Money.ZERO;
         boolean hasRestrictedProduct = false;
 
-        if (request.items() != null) {
-            for (DatHangRequest.LineItem item : request.items()) {
+        {
+            for (DatHangRequest.LineItem item : requestItems) {
                 if (item == null || item.sku() == null || "KHONG_CO".equalsIgnoreCase(item.sku()) || item.quantity() <= 0) {
                     continue;
                 }
@@ -143,7 +146,7 @@ public final class DatHangUseCase implements DatHangInputBoundary {
                 merchandiseTotal, discount, shippingFee, request.paymentMethod(), hasRestrictedProduct);
 
         // 8. Giữ chỗ tồn kho (Inventory reserve)
-        for (DatHangRequest.LineItem item : request.items()) {
+        for (DatHangRequest.LineItem item : requestItems) {
             if (item != null && item.sku() != null && !"KHONG_CO".equalsIgnoreCase(item.sku()) && item.quantity() > 0) {
                 inventoryRepository.reserve(item.sku(), item.quantity());
             }
@@ -155,7 +158,7 @@ public final class DatHangUseCase implements DatHangInputBoundary {
         // 9. Lưu đơn hàng
         orderRepository.save(order);
 
-        // 10. Giảm lượt voucher & lưu lại (Bug 3 fix)
+        // 10. Giảm lượt voucher & lưu lại
         if (!voucher.isNoVoucher()) {
             voucher.decrementUsage();
             voucherRepository.save(voucher);
@@ -163,8 +166,8 @@ public final class DatHangUseCase implements DatHangInputBoundary {
 
         // 11. Chuẩn bị kết quả xuất ra Presenter
         int firstItemRemainingStock = 0;
-        if (!request.items().isEmpty()) {
-            firstItemRemainingStock = inventoryRepository.stockOf(request.items().get(0).sku());
+        if (!requestItems.isEmpty()) {
+            firstItemRemainingStock = inventoryRepository.stockOf(requestItems.get(0).sku());
         }
         int giftStockAfter = hasGift ? inventoryRepository.stockOf(request.giftSku()) : 0;
 

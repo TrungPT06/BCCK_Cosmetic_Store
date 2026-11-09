@@ -1,4 +1,4 @@
-package starter.dathang.usecase;
+package starter.shared.port;
 
 import starter.domain.Order;
 

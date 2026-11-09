@@ -1,5 +1,6 @@
 package starter.dathang;
 
+import starter.shared.port.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,7 @@ class DatHangUseCaseTest {
     }
 
     @Test
-    @DisplayName("Bug 3: Đặt hàng lần 1 trừ lượt dùng của voucher; đặt lần 2 bị từ chối VOUCHER_HET_LUOT_SU_DUNG")
+    @DisplayName("Voucher hết lượt: Đặt hàng lần 1 trừ lượt dùng của voucher; đặt lần 2 bị từ chối VOUCHER_HET_LUOT_SU_DUNG")
     void voucherUsageDecrementedAndFailsOnSecondOrder() {
         // Voucher chỉ có 1 lượt dùng duy nhất
         voucherRepo.save(new Voucher("GIAM50K", Money.of(50_000L), Money.of(200_000L), today.plusMonths(1), 1));

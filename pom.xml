@@ -180,9 +180,6 @@
                         <include>**/*TestSuite.java</include>
                         <include>**/When*.java</include>
                     </includes>
-                    <parallel>classes</parallel>
-                    <parallel>methods</parallel>
-                    <useUnlimitedThreads>true</useUnlimitedThreads>
                 </configuration>
                 <executions>
                     <execution>
